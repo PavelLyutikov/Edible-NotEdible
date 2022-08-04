@@ -4,7 +4,7 @@ Continuing to learn the programming language, my next project is a casual game, 
 
 ____
 
-![screenshot](https://im.wampi.ru/2022/08/03/Group-165.png)
+![screenshot](https://github.com/PavelLyutikov/Edible-NotEdible/blob/master/Screenshot/screenshot.png?raw=true)
 
 ____
 
