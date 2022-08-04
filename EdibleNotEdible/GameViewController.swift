@@ -11,38 +11,23 @@ import SpriteKit
 import GameplayKit
 import GoogleMobileAds
 import AVFoundation
-import UnityAds
-import FBAudienceNetwork
-//import YandexMobileAds
-//import AppTrackingTransparency
-//import Appodeal
+import AppTrackingTransparency
 
-@available(iOS 14.0, *)
-class GameViewController: UIViewController, FBAdViewDelegate {
+@available(iOS 11.0, *)
+class GameViewController: UIViewController {
+    
+    let totalSize = UIScreen.main.bounds.size
 
     
+    var showVideoReward: Bool = false
     
-    var bannerFBView: FBAdView!
-
-    var addShowEd = true
-    var adds: AddInterstitial!
+    //ironSource
+    let kAPPKEY = "1230817ad"
+    var bannerView: ISBannerView! = nil
     
-    
-    private let banner: GADBannerView = {
-        let banner = GADBannerView()
-        banner.adUnitID = "ca-app-pub-9265838027738410/3760832838"
-//        banner.adUnitID = "ca-app-pub-2129016611376338/8170514429"
-//        banner.adUnitID = "ca-app-pub-3940256099942544/2934735716"//Test
-        banner.load(GADRequest())
-        banner.backgroundColor = .clear
-        return banner
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        self.adds = AddInterstitial(controller: self)
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -57,46 +42,72 @@ class GameViewController: UIViewController, FBAdViewDelegate {
             
             
         }
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (timer) in
+            if #available(iOS 14.6, *) {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    switch status {
+                    case .notDetermined:
+                        break
+                    case .restricted:
+                        break
+                    case .denied:
+                        break
+                    case .authorized:
+                        print("authorized")
+                        break
+                    @unknown default:
+                        break
+                    }
+                }
+            } else {
+                // Fallback on earlier versions
+            }
+        }
             
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.presentInterstitial), name: NSNotification.Name(rawValue: "presentInterstitial"), object: nil)
         
-        banner.rootViewController = self
-        view.addSubview(banner)
-//        requestIDFA()
-//        loadFacebookBanner()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.showRewardVideo), name: NSNotification.Name(rawValue: "showRewardVideo"), object: nil)
         
+        setupIronSourceSdk()
+        loadBanner()
+        loadInterstitial()
     }
     
-//    func requestIDFA() {
-//      ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-//        // Tracking authorization completed. Start loading ads here.
-////         loadAd()
-//      })
-//    }
+    func loadInterstitial() {
+        IronSource.loadInterstitial()
+    }
+    func loadBanner() {
+        let BNSize: ISBannerSize = ISBannerSize(description: "BANNER", width: 320 , height: 50)
+        IronSource.loadBanner(with: self, size: BNSize)
+    }
+    func setupIronSourceSdk() {
+        
+        IronSource.setRewardedVideoDelegate(self)
+        IronSource.setInterstitialDelegate(self)
+        IronSource.setBannerDelegate(self)
+        IronSource.add(self)
+        
+        IronSource.initWithAppKey(kAPPKEY)
+    }
+    func logFunctionName(string: String = #function) {
+        print("IronSource Swift Demo App:"+string)
+    }
+    func destroyBanner() {
+        if bannerView != nil {
+            IronSource.destroyBanner(bannerView)
+        }
+    }
     
-    func loadFacebookBanner() {
-        bannerFBView = FBAdView(placementID: "262266858194204_262273364860220", adSize: kFBAdSizeHeight50Banner, rootViewController: self)
-        bannerFBView.frame = CGRect(x: 0, y: view.bounds.height - bannerFBView.frame.size.height, width: bannerFBView.frame.size.width, height: bannerFBView.frame.size.height)
-        bannerFBView.delegate = self
-        bannerFBView.isHidden = true
-        self.view.addSubview(bannerFBView)
-        bannerFBView.loadAd()
-    }
-    func adViewDidLoad(_ adView: FBAdView) {
-        bannerFBView.isHidden = false
-    }
-    func adView(_ adView: FBAdView, didFailWithError error: Error) {
-        print(error)
+        
+//MARK: - ShowRewardVideo
+    @objc func showRewardVideo() {
+        IronSource.showRewardedVideo(with: self)
     }
     
     @objc func presentInterstitial() {
-        if self.adds.interstitial.isReady {
-            self.adds.interstitial?.present(fromRootViewController: self)
-    } else {
-             print("Not ready/ads disabled")
-        }
+        IronSource.showInterstitial(with: self)
     }
     
     func configureAudioSession() throws {
@@ -105,7 +116,6 @@ class GameViewController: UIViewController, FBAdViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        banner.frame = CGRect(x: view.frame.midX - 150, y: view.frame.size.height - 50, width: 300/*view.frame.size.width*/, height: 50).integral
     }
 
     override var shouldAutorotate: Bool {
@@ -125,41 +135,106 @@ class GameViewController: UIViewController, FBAdViewDelegate {
     }
 }
 
-@available(iOS 14.0, *)
-extension GameViewController: GADInterstitialDelegate {
+//MARK: - ExtensionIronSource
+extension GameViewController: ISBannerDelegate, ISImpressionDataDelegate, ISInterstitialDelegate, ISRewardedVideoDelegate {
+    
+    //banner
+    func bannerDidLoad(_ bannerView: ISBannerView!) {
+        self.bannerView = bannerView
+        if #available(iOS 11.0, *) {
+               
+            if totalSize.height >= 801 {
+                bannerView.frame = CGRect(x: 0, y: view.frame.size.height - 50, width: view.frame.size.width, height: 0)
+                
+            } else if totalSize.height <= 800 {
+                bannerView.frame = CGRect(x: 0, y: view.frame.size.height - 50, width: view.frame.size.width, height: 0)
+            }
+        } else {
+                bannerView.frame = CGRect(x: 0, y: view.frame.size.height - 50, width: view.frame.size.width, height: 0)
+        }
 
-    // delegates for image
-
-    /// Tells the delegate an ad request succeeded.
-    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
-      print("interstitialDidReceiveAd")
+        bannerView.layer.zPosition = 100
+//        view.addSubview(bannerView)
+        
+        logFunctionName()
     }
-
-    /// Tells the delegate an ad request failed.
-    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
-      print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    func bannerDidShow() {
+        logFunctionName()
     }
-
-    /// Tells the delegate that an interstitial will be presented.
-    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
-      print("interstitialWillPresentScreen")
+    func bannerDidFailToLoadWithError(_ error: Error!) {
+        logFunctionName(string: #function+String(describing: Error.self))
     }
-
-    /// Tells the delegate the interstitial is to be animated off the screen.
-    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
-      print("interstitialWillDismissScreen")
+    func didClickBanner() {
+        logFunctionName()
     }
-
-    /// Tells the delegate the interstitial had been animated off the screen.
-    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-        adds.interstitial = self.adds.createAndLoadInterstitial(viewController: self)
-      print("interstitialDidDismissScreen")
+    func bannerWillPresentScreen() {
+        logFunctionName()
     }
-
-    /// Tells the delegate that a user click will open another app
-    /// (such as the App Store), backgrounding the current app.
-    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
-      print("interstitialWillLeaveApplication")
+    func bannerDidDismissScreen() {
+        logFunctionName()
     }
-
+    func bannerWillLeaveApplication() {
+        logFunctionName()
+    }
+    func impressionDataDidSucceed(_ impressionData: ISImpressionData!) {
+        logFunctionName(string: #function+String(describing: impressionData))
+    }
+    
+    //Interstitial
+    public func didClickInterstitial() {
+        logFunctionName()
+    }
+    public func interstitialDidFailToShowWithError(_ error: Error!) {
+        logFunctionName(string: String(describing: error.self))
+    }
+    public func interstitialDidShow() {
+        logFunctionName()
+    }
+    public func interstitialDidClose() {
+        logFunctionName()
+    }
+    public func interstitialDidOpen() {
+        logFunctionName()
+    }
+    public func interstitialDidFailToLoadWithError(_ error: Error!) {
+        logFunctionName(string: #function+String(describing: error.self))
+    }
+    public func interstitialDidLoad() {
+        logFunctionName()
+    }
+    
+    //RewardedVideo
+    public func rewardedVideoHasChangedAvailability(_ available: Bool) {
+        logFunctionName(string: #function+String(available.self))
+    }
+    public func rewardedVideoDidEnd() {
+        logFunctionName()
+    }
+    public func rewardedVideoDidStart() {
+        logFunctionName()
+    }
+    public func rewardedVideoDidClose() {
+        
+        if showVideoReward == true {
+            
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "successfulAdViewing"), object: nil)
+            showVideoReward = false
+        }
+        
+        logFunctionName()
+    }
+    public func rewardedVideoDidOpen() {
+        logFunctionName()
+    }
+    public func rewardedVideoDidFailToShowWithError(_ error: Error!) {
+        logFunctionName(string: #function+String(describing: error.self))
+    }
+    public func didReceiveReward(forPlacement placementInfo: ISPlacementInfo!) {
+        logFunctionName(string: #function+String(describing: placementInfo.self))
+        
+        showVideoReward = true
+    }
+    func didClickRewardedVideo(_ placementInfo: ISPlacementInfo!) {
+        logFunctionName(string: #function+String(describing: placementInfo.self))
+    }
 }

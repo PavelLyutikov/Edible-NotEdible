@@ -1,0 +1,6 @@
+framework module RangersAPM_Pangle {
+  umbrella header "RangersAPM-Pangle-umbrella.h"
+
+  export *
+  module * { export * }
+}

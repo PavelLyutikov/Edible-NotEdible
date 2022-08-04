@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		159CBE8136CF353F55EB3B83 /* Pods_EdibleNotEdible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA2ECD3C92875C64903DCADB /* Pods_EdibleNotEdible.framework */; };
+		354DA0D225BA9B2900F60C1F /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354DA0D125BA9B2900F60C1F /* Sound.swift */; };
+		355B22AC25B95C5600782039 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 355B22AE25B95C5600782039 /* Localizable.strings */; };
+		3599BE1827537BB90098FF87 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3599BE1727537BB90098FF87 /* GoogleService-Info.plist */; };
 		B543BEB8244B577D00FD90DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B543BEB7244B577D00FD90DD /* AppDelegate.swift */; };
 		B543BEBA244B577D00FD90DD /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B543BEB9244B577D00FD90DD /* GameScene.sks */; };
-		B543BEBC244B577D00FD90DD /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = B543BEBB244B577D00FD90DD /* Actions.sks */; };
 		B543BEBE244B577D00FD90DD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B543BEBD244B577D00FD90DD /* GameScene.swift */; };
 		B543BEC0244B577D00FD90DD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B543BEBF244B577D00FD90DD /* GameViewController.swift */; };
 		B543BEC3244B577D00FD90DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B543BEC1244B577D00FD90DD /* Main.storyboard */; };
 		B543BEC5244B577E00FD90DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B543BEC4244B577E00FD90DD /* Assets.xcassets */; };
 		B543BEC8244B577E00FD90DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B543BEC6244B577E00FD90DD /* LaunchScreen.storyboard */; };
-		B554DBAD24685E590080969C /* AddInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = B554DBAC24685E590080969C /* AddInterstitial.swift */; };
 		B55F407A245843F900806761 /* FailedScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B55F4079245843F900806761 /* FailedScene.sks */; };
 		B55F407F2458451C00806761 /* FailedScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F407E2458451C00806761 /* FailedScene.swift */; };
-		B5678C0B25060B2A00D8D242 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5678C0A25060B2A00D8D242 /* GoogleService-Info.plist */; };
 		B5992289244CBBC700C1ED93 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5992288244CBBC700C1ED93 /* MenuScene.swift */; };
 		B599228B244CBBE200C1ED93 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B599228A244CBBE200C1ED93 /* MenuScene.sks */; };
 		B599228D244CC2EE00C1ED93 /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599228C244CC2EE00C1ED93 /* ButtonNode.swift */; };
@@ -29,21 +29,24 @@
 		B5D82221245D633000E3E27B /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D82220245D633000E3E27B /* SKButton.swift */; };
 		B5D82227245D63FA00E3E27B /* GameSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D82226245D63FA00E3E27B /* GameSceneViewModel.swift */; };
 		B5D82229245D646C00E3E27B /* ObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D82228245D646C00E3E27B /* ObjectModel.swift */; };
-		B5D82239245D947000E3E27B /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = B5D82234245D947000E3E27B /* win.wav */; };
-		B5D8223A245D947000E3E27B /* tap.flac in Resources */ = {isa = PBXBuildFile; fileRef = B5D82235245D947000E3E27B /* tap.flac */; };
-		B5D8223B245D947000E3E27B /* fail.wav in Resources */ = {isa = PBXBuildFile; fileRef = B5D82236245D947000E3E27B /* fail.wav */; };
-		B5D8223C245D947000E3E27B /* time_is_up.wav in Resources */ = {isa = PBXBuildFile; fileRef = B5D82237245D947000E3E27B /* time_is_up.wav */; };
+		B5D82239245D947000E3E27B /* winSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B5D82234245D947000E3E27B /* winSound.wav */; };
+		B5D8223A245D947000E3E27B /* tapSound.flac in Resources */ = {isa = PBXBuildFile; fileRef = B5D82235245D947000E3E27B /* tapSound.flac */; };
+		B5D8223B245D947000E3E27B /* failSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B5D82236245D947000E3E27B /* failSound.wav */; };
+		B5D8223C245D947000E3E27B /* timeIsUpSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = B5D82237245D947000E3E27B /* timeIsUpSound.wav */; };
 		B5D82256245F17A500E3E27B /* FailedTimeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D82255245F17A500E3E27B /* FailedTimeScene.swift */; };
 		B5D82258245F17BB00E3E27B /* FailedTimeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B5D82257245F17BB00E3E27B /* FailedTimeScene.sks */; };
-		B5D8835D246C492300DC5331 /* clock.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B5D8835C246C492300DC5331 /* clock.mp3 */; };
+		B5D8835D246C492300DC5331 /* clockSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B5D8835C246C492300DC5331 /* clockSound.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		025864DB8D703F78D5E0F522 /* Pods-EdibleNotEdible.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdibleNotEdible.debug.xcconfig"; path = "Target Support Files/Pods-EdibleNotEdible/Pods-EdibleNotEdible.debug.xcconfig"; sourceTree = "<group>"; };
+		354DA0D125BA9B2900F60C1F /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
+		355B22AD25B95C5600782039 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		355B22B025B95C7B00782039 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3599BE1727537BB90098FF87 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		593753D2DCA626D82FC90254 /* Pods-EdibleNotEdible.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdibleNotEdible.release.xcconfig"; path = "Target Support Files/Pods-EdibleNotEdible/Pods-EdibleNotEdible.release.xcconfig"; sourceTree = "<group>"; };
 		B543BEB7244B577D00FD90DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B543BEB9244B577D00FD90DD /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		B543BEBB244B577D00FD90DD /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		B543BEBD244B577D00FD90DD /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		B543BEBF244B577D00FD90DD /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		B543BEC2244B577D00FD90DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -51,10 +54,8 @@
 		B543BEC7244B577E00FD90DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B543BEC9244B577E00FD90DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B554DBAB2466BD800080969C /* EdibleNotEdible.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdibleNotEdible.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B554DBAC24685E590080969C /* AddInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInterstitial.swift; sourceTree = "<group>"; };
 		B55F4079245843F900806761 /* FailedScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FailedScene.sks; sourceTree = "<group>"; };
 		B55F407E2458451C00806761 /* FailedScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedScene.swift; sourceTree = "<group>"; };
-		B5678C0A25060B2A00D8D242 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5992288244CBBC700C1ED93 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		B599228A244CBBE200C1ED93 /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
 		B599228C244CC2EE00C1ED93 /* ButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
@@ -64,13 +65,13 @@
 		B5D82220245D633000E3E27B /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
 		B5D82226245D63FA00E3E27B /* GameSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneViewModel.swift; sourceTree = "<group>"; };
 		B5D82228245D646C00E3E27B /* ObjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectModel.swift; sourceTree = "<group>"; };
-		B5D82234245D947000E3E27B /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
-		B5D82235245D947000E3E27B /* tap.flac */ = {isa = PBXFileReference; lastKnownFileType = file; path = tap.flac; sourceTree = "<group>"; };
-		B5D82236245D947000E3E27B /* fail.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fail.wav; sourceTree = "<group>"; };
-		B5D82237245D947000E3E27B /* time_is_up.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = time_is_up.wav; sourceTree = "<group>"; };
+		B5D82234245D947000E3E27B /* winSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winSound.wav; sourceTree = "<group>"; };
+		B5D82235245D947000E3E27B /* tapSound.flac */ = {isa = PBXFileReference; lastKnownFileType = file; path = tapSound.flac; sourceTree = "<group>"; };
+		B5D82236245D947000E3E27B /* failSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = failSound.wav; sourceTree = "<group>"; };
+		B5D82237245D947000E3E27B /* timeIsUpSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = timeIsUpSound.wav; sourceTree = "<group>"; };
 		B5D82255245F17A500E3E27B /* FailedTimeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailedTimeScene.swift; sourceTree = "<group>"; };
 		B5D82257245F17BB00E3E27B /* FailedTimeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FailedTimeScene.sks; sourceTree = "<group>"; };
-		B5D8835C246C492300DC5331 /* clock.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clock.mp3; sourceTree = "<group>"; };
+		B5D8835C246C492300DC5331 /* clockSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clockSound.mp3; sourceTree = "<group>"; };
 		DA2ECD3C92875C64903DCADB /* Pods_EdibleNotEdible.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EdibleNotEdible.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -101,7 +102,6 @@
 			children = (
 				B5D8222A245D74C200E3E27B /* Main */,
 				B5D8223D245D948400E3E27B /* Scenes */,
-				B554DBB024685E840080969C /* GoodleAdd */,
 				B5D8224E245D967700E3E27B /* Resources */,
 				B5D8224F245D96B100E3E27B /* Nodes */,
 				B5D82253245D970000E3E27B /* Helper */,
@@ -109,24 +109,16 @@
 			path = EdibleNotEdible;
 			sourceTree = "<group>";
 		};
-		B554DBB024685E840080969C /* GoodleAdd */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = GoodleAdd;
-			sourceTree = "<group>";
-		};
 		B5D8222A245D74C200E3E27B /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				B543BEB7244B577D00FD90DD /* AppDelegate.swift */,
-				B543BEBB244B577D00FD90DD /* Actions.sks */,
 				B543BEBF244B577D00FD90DD /* GameViewController.swift */,
-				B554DBAC24685E590080969C /* AddInterstitial.swift */,
 				B543BEC4244B577E00FD90DD /* Assets.xcassets */,
 				B543BEC1244B577D00FD90DD /* Main.storyboard */,
-				B5678C0A25060B2A00D8D242 /* GoogleService-Info.plist */,
+				355B22AE25B95C5600782039 /* Localizable.strings */,
 				B543BEC6244B577E00FD90DD /* LaunchScreen.storyboard */,
+				3599BE1727537BB90098FF87 /* GoogleService-Info.plist */,
 				B543BEC9244B577E00FD90DD /* Info.plist */,
 			);
 			name = Main;
@@ -200,11 +192,11 @@
 		B5D8224C245D965200E3E27B /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				B5D8835C246C492300DC5331 /* clock.mp3 */,
-				B5D82236245D947000E3E27B /* fail.wav */,
-				B5D82235245D947000E3E27B /* tap.flac */,
-				B5D82237245D947000E3E27B /* time_is_up.wav */,
-				B5D82234245D947000E3E27B /* win.wav */,
+				B5D8835C246C492300DC5331 /* clockSound.mp3 */,
+				B5D82236245D947000E3E27B /* failSound.wav */,
+				B5D82235245D947000E3E27B /* tapSound.flac */,
+				B5D82237245D947000E3E27B /* timeIsUpSound.wav */,
+				B5D82234245D947000E3E27B /* winSound.wav */,
 			);
 			path = Sound;
 			sourceTree = "<group>";
@@ -239,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				B5992290244D5B1C00C1ED93 /* Constants.swift */,
+				354DA0D125BA9B2900F60C1F /* Sound.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -281,7 +274,7 @@
 				B543BEB1244B577D00FD90DD /* Frameworks */,
 				B543BEB2244B577D00FD90DD /* Resources */,
 				39164A2506DCA50A6DAC75BF /* [CP] Embed Pods Frameworks */,
-				EEA2B08F7D1507BEB456A82F /* [CP] Copy Pods Resources */,
+				C1E5AA1D11CA021D0DF40D79 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -314,6 +307,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = B543BEAB244B577D00FD90DD;
 			productRefGroup = B543BEAB244B577D00FD90DD;
@@ -330,20 +324,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5D8223B245D947000E3E27B /* fail.wav in Resources */,
+				B5D8223B245D947000E3E27B /* failSound.wav in Resources */,
 				B543BEC3244B577D00FD90DD /* Main.storyboard in Resources */,
-				B5D82239245D947000E3E27B /* win.wav in Resources */,
+				B5D82239245D947000E3E27B /* winSound.wav in Resources */,
 				B5D82258245F17BB00E3E27B /* FailedTimeScene.sks in Resources */,
 				B599228B244CBBE200C1ED93 /* MenuScene.sks in Resources */,
 				B543BEBA244B577D00FD90DD /* GameScene.sks in Resources */,
 				B543BEC5244B577E00FD90DD /* Assets.xcassets in Resources */,
-				B5D8223A245D947000E3E27B /* tap.flac in Resources */,
+				B5D8223A245D947000E3E27B /* tapSound.flac in Resources */,
 				B543BEC8244B577E00FD90DD /* LaunchScreen.storyboard in Resources */,
-				B5D8835D246C492300DC5331 /* clock.mp3 in Resources */,
-				B5D8223C245D947000E3E27B /* time_is_up.wav in Resources */,
+				B5D8835D246C492300DC5331 /* clockSound.mp3 in Resources */,
+				355B22AC25B95C5600782039 /* Localizable.strings in Resources */,
+				B5D8223C245D947000E3E27B /* timeIsUpSound.wav in Resources */,
 				B55F407A245843F900806761 /* FailedScene.sks in Resources */,
-				B543BEBC244B577D00FD90DD /* Actions.sks in Resources */,
-				B5678C0B25060B2A00D8D242 /* GoogleService-Info.plist in Resources */,
+				3599BE1827537BB90098FF87 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,7 +383,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EdibleNotEdible/Pods-EdibleNotEdible-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EEA2B08F7D1507BEB456A82F /* [CP] Copy Pods Resources */ = {
+		C1E5AA1D11CA021D0DF40D79 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -417,12 +411,12 @@
 				B5992289244CBBC700C1ED93 /* MenuScene.swift in Sources */,
 				B5D82256245F17A500E3E27B /* FailedTimeScene.swift in Sources */,
 				B5D82229245D646C00E3E27B /* ObjectModel.swift in Sources */,
-				B554DBAD24685E590080969C /* AddInterstitial.swift in Sources */,
 				B5992293244D725200C1ED93 /* SimpleScene.swift in Sources */,
 				B599228F244D59E300C1ED93 /* LabelNode.swift in Sources */,
 				B5D82227245D63FA00E3E27B /* GameSceneViewModel.swift in Sources */,
 				B543BEC0244B577D00FD90DD /* GameViewController.swift in Sources */,
 				B5992291244D5B1C00C1ED93 /* Constants.swift in Sources */,
+				354DA0D225BA9B2900F60C1F /* Sound.swift in Sources */,
 				B543BEB8244B577D00FD90DD /* AppDelegate.swift in Sources */,
 				B599228D244CC2EE00C1ED93 /* ButtonNode.swift in Sources */,
 				B5D82221245D633000E3E27B /* SKButton.swift in Sources */,
@@ -433,6 +427,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		355B22AE25B95C5600782039 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				355B22AD25B95C5600782039 /* en */,
+				355B22B025B95C7B00782039 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B543BEC1244B577D00FD90DD /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -456,6 +459,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -516,6 +520,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -572,27 +577,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.10;
+				CURRENT_PROJECT_VERSION = 1.3.21;
 				DEVELOPMENT_TEAM = TPM5M6DSM5;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GA-SDK-IOS-master",
-				);
 				INFOPLIST_FILE = EdibleNotEdible/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GA-SDK-IOS-master/Library\\ non-bitcode",
-					"$(PROJECT_DIR)/GA-SDK-IOS-master/Library",
-				);
-				MARKETING_VERSION = 1.3.10;
+				MARKETING_VERSION = 1.3.21;
 				PRODUCT_BUNDLE_IDENTIFIER = game.spriteKit.Edible.Not.Edible;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = Pods/IronSourceSDK/IronSource/IronSource.framework/Headers/IronSource.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -605,28 +601,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.10;
+				CURRENT_PROJECT_VERSION = 1.3.21;
 				DEVELOPMENT_TEAM = TPM5M6DSM5;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GA-SDK-IOS-master",
-				);
 				INFOPLIST_FILE = EdibleNotEdible/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GA-SDK-IOS-master/Library\\ non-bitcode",
-					"$(PROJECT_DIR)/GA-SDK-IOS-master/Library",
-				);
-				MARKETING_VERSION = 1.3.10;
+				MARKETING_VERSION = 1.3.21;
 				PRODUCT_BUNDLE_IDENTIFIER = game.spriteKit.Edible.Not.Edible;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = Pods/IronSourceSDK/IronSource/IronSource.framework/Headers/IronSource.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

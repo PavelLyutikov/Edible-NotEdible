@@ -14,8 +14,8 @@ class SimpleScene : SKScene {
     func changeToSceneBy(nameScene: String) {
         let scene = (nameScene == "GameScene") ? GameScene(size: self.size) : MenuScene(size: self.size)
         
-        let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
-        
+//        let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
+        let transition = SKTransition.push(with: .down, duration: 1)
         scene.scaleMode = .aspectFill
 
         self.view?.presentScene(scene, transition: transition)
@@ -24,8 +24,7 @@ class SimpleScene : SKScene {
     func failedToSceneBy(nameScene: String) {
         let scene = (nameScene == "FiledScene") ? GameScene(size: self.size) : FailedScene(size: self.size)
         
-        let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
-        
+        let transition = SKTransition.flipHorizontal(withDuration: 0.5)
         scene.scaleMode = .aspectFill
 
         self.view?.presentScene(scene, transition: transition)
@@ -35,45 +34,21 @@ class SimpleScene : SKScene {
         func failedTimeToSceneBy(nameScene: String) {
             let scene = (nameScene == "FiledTimeScene") ? GameScene(size: self.size) : FailedTimeScene(size: self.size)
             
-            let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
-            
+            let transition = SKTransition.flipHorizontal(withDuration: 0.5)
             scene.scaleMode = .aspectFill
 
             self.view?.presentScene(scene, transition: transition)
         }
-//MARK: - HotCold
-// func changeMenuSceneToHotCold(nameScene: String) {
-//        let scene = (nameScene == "changeMenuSceneToHotCold") ? GameSceneHotCold(size: self.size) : MenuScene(size: self.size)
-//        
-//        let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
-//        
-//        scene.scaleMode = .aspectFill
-//
-//        self.view?.presentScene(scene, transition: transition)
-//    }
-//    
-//    func failedToSceneHotCold(nameScene: String) {
-//        let scene = (nameScene == "failedToSceneHotCold") ? GameSceneHotCold(size: self.size) : FailedScene(size: self.size)
-//        
-//        let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
-//        
-//        scene.scaleMode = .aspectFill
-//
-//        self.view?.presentScene(scene, transition: transition)
-//        
-//    }
-//        
-//        func failedTimeToSceneHotCold(nameScene: String) {
-//            let scene = (nameScene == "failedTimeToSceneHotCold") ? GameSceneHotCold(size: self.size) : FailedTimeScene(size: self.size)
-//            
-//            let transition = SKTransition.fade(with: .defBackground, duration: 0.3)
-//            
-//            scene.scaleMode = .aspectFill
-//
-//            self.view?.presentScene(scene, transition: transition)
-//        }
-    func playSoundFX(_ action: SKAction) {
-        self.run(action)
+    
+    func failedSceneToGameScene(nameScene: String) {
+        let scene = (nameScene == "FiledSceneToGameScene") ? GameScene(size: self.size) : FailedScene(size: self.size)
+        
+//        let transition = SKTransition.crossFade(withDuration: 0.5)
+//        let transition = SKTransition.moveIn(with: .down, duration: 0.5)
+        let transition = SKTransition.flipHorizontal(withDuration: 0.5)
+        scene.scaleMode = .aspectFill
+        self.view?.presentScene(scene, transition: transition)
+        
     }
     
 }

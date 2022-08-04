@@ -8,9 +8,6 @@
 
 import SpriteKit
 import StoreKit
-//import GameplayKit
-
-
 
 class MenuScene: SimpleScene {
     
@@ -24,7 +21,7 @@ class MenuScene: SimpleScene {
     let bestScoreSoftHard = UserDefaults.standard.integer(forKey: "bestScoreSoftHard")
     let bestScoreCarnHarb = UserDefaults.standard.integer(forKey: "bestScoreCarnHarb")
     
-    var highScoreLabelNode: SKLabelNode!
+    let highScoreLabelNode = SKLabelNode(fontNamed: "Chalkboard SE")
     let totalSize = UIScreen.main.bounds.size
     
     var backgroundTexture: SKTexture!
@@ -35,14 +32,14 @@ class MenuScene: SimpleScene {
     var musicOffButton: SKButton!
     var musicOnButton: SKButton!
 
-    var tapSound = SKAction()
-
 //MARK: - DidMove
     override func didMove(to view: SKView) {
         backgroundTexture = SKTexture(imageNamed: "background")
         self.backgroundColor = .defBackground
         
-//        tapSound = SKAction.playSoundFileNamed("tap.flac", waitForCompletion: false)
+//        UserDefaults.standard.set(55, forKey: "bestScoreEdible")
+//        UserDefaults.standard.set(73, forKey: "bestScoreHotCold")
+//        UserDefaults.standard.set(81, forKey: "bestScoreSoftHard")
         
         setupUI()
         createObject()
@@ -56,8 +53,10 @@ class MenuScene: SimpleScene {
         } else if playVolume == false {
             self.spawnMusicOnButton()
         }
+        
+        
     }
- 
+
  // MARK: - AnimationBackground
     func createObject() {
         self.addChild(backgroundObject)
@@ -105,10 +104,12 @@ class MenuScene: SimpleScene {
             playButton = SKButton(imageName: "play2", buttonAction: {
                     
                     if playVolume == true {
-                    self.playSoundFX(self.tapSound)
+                        self.run(Sound.tap.action)
                     }
 
                     self.changeToSceneBy(nameScene: "GameScene")
+                
+                    gameSceneClosed = false
                 })
             
             playButton.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 100)
@@ -121,7 +122,7 @@ class MenuScene: SimpleScene {
         playButton = SKButton(imageName: "grassMeatPlay", buttonAction: {
                 
                 if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                    self.run(Sound.tap.action)
                 }
      
                 self.changeToSceneBy(nameScene: "GameScene")
@@ -138,7 +139,7 @@ class MenuScene: SimpleScene {
         playButton = SKButton(imageName: "hotColdPlay", buttonAction: {
                 
                 if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                    self.run(Sound.tap.action)
                 }
 
                 self.changeToSceneBy(nameScene: "GameScene")
@@ -155,7 +156,7 @@ class MenuScene: SimpleScene {
         playButton = SKButton(imageName: "softHardPlay", buttonAction: {
                 
                 if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                    self.run(Sound.tap.action)
                 }
              
                 self.changeToSceneBy(nameScene: "GameScene")
@@ -171,15 +172,41 @@ class MenuScene: SimpleScene {
     func setupUI() {
         
         //LogoMenu
-        let logoMenu = SKSpriteNode(imageNamed: "logoMenu")
-        logoMenu.position = CGPoint(x: self.frame.midX, y: self.frame.maxY - 130)
-        logoMenu.xScale = 0.3
-        logoMenu.yScale = 0.3
-        self.addChild(logoMenu)
+        switch Locale.current.languageCode {
+        case "ru":
+            let logoMenu = SKSpriteNode(imageNamed: "logoMenuRus2")
+            logoMenu.position = CGPoint(x: self.frame.midX, y: self.frame.maxY - 130)
+            logoMenu.xScale = 0.3
+            logoMenu.yScale = 0.3
+            self.addChild(logoMenu)
+        default:
+            let logoMenu = SKSpriteNode(imageNamed: "logoMenu")
+            logoMenu.position = CGPoint(x: self.frame.midX, y: self.frame.maxY - 130)
+            logoMenu.xScale = 0.3
+            logoMenu.yScale = 0.3
+            self.addChild(logoMenu)
+        }
         
         //Best Score Label
-        let bestScoreLabelNode = LabelNode(text: "BEST SCORE", fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 400), fontColor: .textColor)
-        self.addChild(bestScoreLabelNode)
+        switch Locale.current.languageCode {
+        case "ru":
+            let bestScoreLabelNode = SKLabelNode(fontNamed: "Chalkboard SE")
+            bestScoreLabelNode.text = "ЛУЧШИЙ РЕЗУЛЬТАТ"
+            bestScoreLabelNode.position =  CGPoint(x: self.frame.midX, y: self.frame.midY - 400)
+            bestScoreLabelNode.fontColor = .textColor
+            bestScoreLabelNode.zPosition = 2
+            bestScoreLabelNode.fontSize = 60
+            self.addChild(bestScoreLabelNode)
+        default:
+            let bestScoreLabelNode = SKLabelNode(fontNamed: "Chalkboard SE")
+            bestScoreLabelNode.text = "BEST SCORE"
+            bestScoreLabelNode.position =  CGPoint(x: self.frame.midX, y: self.frame.midY - 400)
+            bestScoreLabelNode.fontColor = .textColor
+            bestScoreLabelNode.zPosition = 2
+            bestScoreLabelNode.fontSize = 70
+            self.addChild(bestScoreLabelNode)
+        }
+        
 
     }
 //MARK: - RateMeButton
@@ -202,7 +229,7 @@ class MenuScene: SimpleScene {
         
             SKStoreReviewController.requestReview()
                 if playVolume == true {
-                    self.playSoundFX(self.tapSound)
+                    self.run(Sound.tap.action)
                 }
              })
              rateMe.position = CGPoint(x: self.frame.midX + positionX, y: self.frame.midY + positionY)
@@ -224,19 +251,35 @@ class MenuScene: SimpleScene {
     }
     
     func spawnBestScoreEdible() {
-        highScoreLabelNode = LabelNode(text: String(bestScoreEdible), fontSize: 90, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 500), fontColor: .textColor)
+        highScoreLabelNode.zPosition = 2
+        highScoreLabelNode.text = String(bestScoreEdible)
+        highScoreLabelNode.fontSize = 90
+        highScoreLabelNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 500)
+        highScoreLabelNode.fontColor = .textColor
         self.addChild(highScoreLabelNode)
     }
     func spawnBestScoreHotCold() {
-        highScoreLabelNode = LabelNode(text: String(bestScoreHotCold), fontSize: 90, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 500), fontColor: .textColor)
+        highScoreLabelNode.zPosition = 2
+        highScoreLabelNode.text = String(bestScoreHotCold)
+        highScoreLabelNode.fontSize = 90
+        highScoreLabelNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 500)
+        highScoreLabelNode.fontColor = .textColor
         self.addChild(highScoreLabelNode)
     }
     func spawnBestScoreSoftHard() {
-        highScoreLabelNode = LabelNode(text: String(bestScoreSoftHard), fontSize: 90, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 500), fontColor: .textColor)
+        highScoreLabelNode.zPosition = 2
+        highScoreLabelNode.text = String(bestScoreSoftHard)
+        highScoreLabelNode.fontSize = 90
+        highScoreLabelNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 500)
+        highScoreLabelNode.fontColor = .textColor
         self.addChild(highScoreLabelNode)
     }
     func spawnBestScoreCarnHerb() {
-        highScoreLabelNode = LabelNode(text: String(bestScoreCarnHarb), fontSize: 90, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 500), fontColor: .textColor)
+        highScoreLabelNode.zPosition = 2
+        highScoreLabelNode.text = String(bestScoreCarnHarb)
+        highScoreLabelNode.fontSize = 90
+        highScoreLabelNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY - 500)
+        highScoreLabelNode.fontColor = .textColor
         self.addChild(highScoreLabelNode)
     }
 //MARK:- MusicOffButton
@@ -296,7 +339,7 @@ class MenuScene: SimpleScene {
                     if playVolume == false {
                         self.musicOnButton.removeFromParent()
                         self.spawnMusicOffButton()
-                        self.playSoundFX(self.tapSound)
+                        self.run(Sound.tap.action)
                         playVolume = true
                     }
                     print(playVolume)
@@ -310,7 +353,7 @@ class MenuScene: SimpleScene {
     func spawnButtonLevel() {
         let btnLevel = SKButton(imageName: "lvl", buttonAction: {
             if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                self.run(Sound.tap.action)
             }
             self.createPanel()
             self.playButton.removeFromParent()
@@ -339,7 +382,7 @@ class MenuScene: SimpleScene {
             self.spawnPlay()
             self.spawnBestScore()
             if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                self.run(Sound.tap.action)
             }
         })
         backPanel.setScale(0.65)
@@ -348,18 +391,29 @@ class MenuScene: SimpleScene {
         panel.addChild(backPanel)
         
     //TitleLevels
-        let lvlTitle = SKLabelNode(text: "Levels")
-        lvlTitle.fontName = "Helvetica"
-        lvlTitle.fontSize = 180
-        lvlTitle.fontColor = .black
-        lvlTitle.position = CGPoint(x: CGFloat(0), y: CGFloat(1000))
-        lvlTitle.zPosition = 30
-        panel.addChild(lvlTitle)
+        switch Locale.current.languageCode {
+        case "ru":
+            let lvlTitle = SKLabelNode(text: "Уровни")
+            lvlTitle.fontName = "Chalkboard SE"
+            lvlTitle.fontSize = 190
+            lvlTitle.fontColor = .black
+            lvlTitle.position = CGPoint(x: CGFloat(0), y: CGFloat(1000))
+            lvlTitle.zPosition = 30
+            panel.addChild(lvlTitle)
+        default:
+            let lvlTitle = SKLabelNode(text: "Levels")
+            lvlTitle.fontName = "Chalkboard SE"
+            lvlTitle.fontSize = 180
+            lvlTitle.fontColor = .black
+            lvlTitle.position = CGPoint(x: CGFloat(0), y: CGFloat(1000))
+            lvlTitle.zPosition = 30
+            panel.addChild(lvlTitle)
+        }
         
     //edibleDefaults
         let edibleDefaults = SKButton(imageName: "play2", buttonAction: {
             if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                self.run(Sound.tap.action)
             }
             
             UserDefaults.standard.set(true, forKey: "Edible")
@@ -380,7 +434,7 @@ class MenuScene: SimpleScene {
         let hotColdDefaults = SKButton(imageName: "hotColdPlay", buttonAction: {
             
             if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                self.run(Sound.tap.action)
             }
             if self.bestScoreEdible >= 25 {
                 UserDefaults.standard.set(false, forKey: "Edible")
@@ -404,7 +458,7 @@ class MenuScene: SimpleScene {
     //hardSoftDefaults
         let hardSoftDefaults = SKButton(imageName: "softHardPlay", buttonAction: {
             if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                self.run(Sound.tap.action)
             }
             
             if self.bestScoreHotCold >= 50 {
@@ -429,7 +483,7 @@ class MenuScene: SimpleScene {
     //carbHerdDefaults
         let carbHerdDefaults = SKButton(imageName: "grassMeatPlay", buttonAction: {
             if playVolume == true {
-                self.playSoundFX(self.tapSound)
+                self.run(Sound.tap.action)
             }
             
             if self.bestScoreSoftHard >= 75 {
@@ -452,37 +506,89 @@ class MenuScene: SimpleScene {
         panel.addChild(carbHerdDefaults)
         
         //Title
-        let edibleTitle = SKLabelNode(text: "Edible/Not Edible")
-        edibleTitle.fontName = "Helvetica"
-        edibleTitle.fontSize = 80
-        edibleTitle.fontColor = .black
-        edibleTitle.position = CGPoint(x: -CGFloat(350), y: CGFloat(200))
-        edibleTitle.zPosition = 30
-        panel.addChild(edibleTitle)
+        switch Locale.current.languageCode {
+        case "ru":
+            let edibleTitle = SKLabelNode(text: "Съедобное/НеСъедобное")
+            edibleTitle.fontName = "Chalkboard SE"
+            edibleTitle.fontSize = 80
+            edibleTitle.fontColor = .black
+            edibleTitle.numberOfLines = 2
+            edibleTitle.preferredMaxLayoutWidth = 540
+            edibleTitle.position = CGPoint(x: -CGFloat(350), y: CGFloat(130))
+            edibleTitle.zPosition = 30
+            panel.addChild(edibleTitle)
+        default:
+            let edibleTitle = SKLabelNode(text: "Edible/Not Edible")
+            edibleTitle.fontName = "Chalkboard SE"
+            edibleTitle.fontSize = 80
+            edibleTitle.fontColor = .black
+            edibleTitle.position = CGPoint(x: -CGFloat(350), y: CGFloat(200))
+            edibleTitle.zPosition = 30
+            panel.addChild(edibleTitle)
+        }
         
-        let hotColdTitle = SKLabelNode(text: "Hot/Cold")
-        hotColdTitle.fontName = "Helvetica"
-        hotColdTitle.fontSize = 80
-        hotColdTitle.fontColor = .black
-        hotColdTitle.position = CGPoint(x: CGFloat(350), y: CGFloat(200))
-        hotColdTitle.zPosition = 30
-        panel.addChild(hotColdTitle)
+        switch Locale.current.languageCode {
+        case "ru":
+            let hotColdTitle = SKLabelNode(text: "Горячее/Холодное")
+            hotColdTitle.fontName = "Chalkboard SE"
+            hotColdTitle.fontSize = 80
+            hotColdTitle.fontColor = .black
+            hotColdTitle.numberOfLines = 2
+            hotColdTitle.preferredMaxLayoutWidth = 540
+            hotColdTitle.position = CGPoint(x: CGFloat(350), y: CGFloat(130))
+            hotColdTitle.zPosition = 30
+            panel.addChild(hotColdTitle)
+        default:
+            let hotColdTitle = SKLabelNode(text: "Hot/Cold")
+            hotColdTitle.fontName = "Chalkboard SE"
+            hotColdTitle.fontSize = 80
+            hotColdTitle.fontColor = .black
+            hotColdTitle.position = CGPoint(x: CGFloat(350), y: CGFloat(200))
+            hotColdTitle.zPosition = 30
+            panel.addChild(hotColdTitle)
+        }
         
-        let softHardTitle = SKLabelNode(text: "Soft/Hard")
-        softHardTitle.fontName = "Helvetica"
-        softHardTitle.fontSize = 80
-        softHardTitle.fontColor = .black
-        softHardTitle.position = CGPoint(x: -CGFloat(350), y: -CGFloat(600))
-        softHardTitle.zPosition = 30
-        panel.addChild(softHardTitle)
+        switch Locale.current.languageCode {
+        case "ru":
+            let softHardTitle = SKLabelNode(text: "Мягкое/Твердое")
+            softHardTitle.fontName = "Chalkboard SE"
+            softHardTitle.fontSize = 80
+            softHardTitle.fontColor = .black
+            softHardTitle.numberOfLines = 2
+            softHardTitle.preferredMaxLayoutWidth = 540
+            softHardTitle.position = CGPoint(x: -CGFloat(350), y: -CGFloat(670))
+            softHardTitle.zPosition = 30
+            panel.addChild(softHardTitle)
+        default:
+            let softHardTitle = SKLabelNode(text: "Soft/Hard")
+            softHardTitle.fontName = "Chalkboard SE"
+            softHardTitle.fontSize = 80
+            softHardTitle.fontColor = .black
+            softHardTitle.position = CGPoint(x: -CGFloat(350), y: -CGFloat(600))
+            softHardTitle.zPosition = 30
+            panel.addChild(softHardTitle)
+        }
         
-        let grassMeatTitle = SKLabelNode(text: "Herbivore/Carnivore")
-        grassMeatTitle.fontName = "Helvetica"
-        grassMeatTitle.fontSize = 80
-        grassMeatTitle.fontColor = .black
-        grassMeatTitle.position = CGPoint(x: CGFloat(350), y: -CGFloat(600))
-        grassMeatTitle.zPosition = 30
-        panel.addChild(grassMeatTitle)
+        switch Locale.current.languageCode {
+        case "ru":
+            let grassMeatTitle = SKLabelNode(text: "Травоядное/Плотоядное")
+            grassMeatTitle.fontName = "Chalkboard SE"
+            grassMeatTitle.fontSize = 80
+            grassMeatTitle.fontColor = .black
+            grassMeatTitle.numberOfLines = 2
+            grassMeatTitle.preferredMaxLayoutWidth = 540
+            grassMeatTitle.position = CGPoint(x: CGFloat(350), y: -CGFloat(670))
+            grassMeatTitle.zPosition = 30
+            panel.addChild(grassMeatTitle)
+        default:
+            let grassMeatTitle = SKLabelNode(text: "Herbivore/Carnivore")
+            grassMeatTitle.fontName = "Chalkboard SE"
+            grassMeatTitle.fontSize = 80
+            grassMeatTitle.fontColor = .black
+            grassMeatTitle.position = CGPoint(x: CGFloat(350), y: -CGFloat(600))
+            grassMeatTitle.zPosition = 30
+            panel.addChild(grassMeatTitle)
+        }
         
     //Lock
         if bestScoreEdible <= 24 {
@@ -492,24 +598,53 @@ class MenuScene: SimpleScene {
             lockHotCold.zPosition = 31
             lockHotCold.zRotation = 7.2
             panel.addChild(lockHotCold)
-            let lockHotColdTitleNumber = SKLabelNode(text: "25")
+            let lockHotColdTitleNumber = SKLabelNode(fontNamed: "Chalkboard SE")
+            lockHotColdTitleNumber.text = "25"
             lockHotColdTitleNumber.fontSize = 180
             lockHotColdTitleNumber.fontColor = .black
             lockHotColdTitleNumber.position = CGPoint(x: CGFloat(0), y: -CGFloat(80))
             lockHotColdTitleNumber.zPosition = 31
             lockHotCold.addChild(lockHotColdTitleNumber)
-            let lockHotColdTitle = SKLabelNode(text: "Edible/")
-            lockHotColdTitle.fontSize = 80
-            lockHotColdTitle.fontColor = .black
-            lockHotColdTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(150))
-            lockHotColdTitle.zPosition = 31
-            lockHotCold.addChild(lockHotColdTitle)
-            let lockHotColdTitle2 = SKLabelNode(text: "NotEdible")
-            lockHotColdTitle2.fontSize = 80
-            lockHotColdTitle2.fontColor = .black
-            lockHotColdTitle2.position = CGPoint(x: CGFloat(0), y: -CGFloat(230))
-            lockHotColdTitle2.zPosition = 31
-            lockHotCold.addChild(lockHotColdTitle2)
+            switch Locale.current.languageCode {
+            case "ru":
+                let lockHotColdTitle = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockHotColdTitle.text = "Съедобное/"
+                lockHotColdTitle.fontSize = 60
+                lockHotColdTitle.fontColor = .black
+                lockHotColdTitle.numberOfLines = 2
+                lockHotColdTitle.preferredMaxLayoutWidth = 500
+                lockHotColdTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(170))
+                lockHotColdTitle.zPosition = 31
+                lockHotCold.addChild(lockHotColdTitle)
+                let lockHotColdTitle2 = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockHotColdTitle2.text = "НеСъедобное"
+                lockHotColdTitle2.fontSize = 60
+                lockHotColdTitle2.fontColor = .black
+                lockHotColdTitle2.numberOfLines = 2
+                lockHotColdTitle2.preferredMaxLayoutWidth = 500
+                lockHotColdTitle2.position = CGPoint(x: CGFloat(0), y: -CGFloat(240))
+                lockHotColdTitle2.zPosition = 31
+                lockHotCold.addChild(lockHotColdTitle2)
+            default:
+                let lockHotColdTitle = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockHotColdTitle.text = "Edible/"
+                lockHotColdTitle.fontSize = 80
+                lockHotColdTitle.fontColor = .black
+                lockHotColdTitle.numberOfLines = 2
+                lockHotColdTitle.preferredMaxLayoutWidth = 500
+                lockHotColdTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(180))
+                lockHotColdTitle.zPosition = 31
+                lockHotCold.addChild(lockHotColdTitle)
+                let lockHotColdTitle2 = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockHotColdTitle2.text = "NotEdible"
+                lockHotColdTitle2.fontSize = 80
+                lockHotColdTitle2.fontColor = .black
+                lockHotColdTitle2.numberOfLines = 2
+                lockHotColdTitle2.preferredMaxLayoutWidth = 500
+                lockHotColdTitle2.position = CGPoint(x: CGFloat(0), y: -CGFloat(260))
+                lockHotColdTitle2.zPosition = 31
+                lockHotCold.addChild(lockHotColdTitle2)
+            }
         }
         if bestScoreHotCold <= 49 {
             let lockSoftHard = SKSpriteNode(imageNamed: "lock")
@@ -518,18 +653,42 @@ class MenuScene: SimpleScene {
             lockSoftHard.zPosition = 31
             lockSoftHard.zRotation = -7.4
             panel.addChild(lockSoftHard)
-            let lockSoftHardTitleNumber = SKLabelNode(text: "50")
+            let lockSoftHardTitleNumber = SKLabelNode(fontNamed: "Chalkboard SE")
+            lockSoftHardTitleNumber.text = "50"
             lockSoftHardTitleNumber.fontSize = 180
             lockSoftHardTitleNumber.fontColor = .black
             lockSoftHardTitleNumber.position = CGPoint(x: CGFloat(0), y: -CGFloat(80))
             lockSoftHardTitleNumber.zPosition = 31
             lockSoftHard.addChild(lockSoftHardTitleNumber)
-            let lockSoftHardTitle = SKLabelNode(text: "Hot/Cold")
-            lockSoftHardTitle.fontSize = 100
-            lockSoftHardTitle.fontColor = .black
-            lockSoftHardTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(200))
-            lockSoftHardTitle.zPosition = 31
-            lockSoftHard.addChild(lockSoftHardTitle)
+            switch Locale.current.languageCode {
+            case "ru":
+                let lockSoftHardTitle = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockSoftHardTitle.text = "Горячее/"
+                lockSoftHardTitle.fontSize = 75
+                lockSoftHardTitle.fontColor = .black
+                lockSoftHardTitle.numberOfLines = 2
+                lockSoftHardTitle.preferredMaxLayoutWidth = 500
+                lockSoftHardTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(170))
+                lockSoftHardTitle.zPosition = 31
+                lockSoftHard.addChild(lockSoftHardTitle)
+                let lockSoftHardTitle2 = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockSoftHardTitle2.text = "Холодное"
+                lockSoftHardTitle2.fontSize = 80
+                lockSoftHardTitle2.fontColor = .black
+                lockSoftHardTitle2.numberOfLines = 2
+                lockSoftHardTitle2.preferredMaxLayoutWidth = 500
+                lockSoftHardTitle2.position = CGPoint(x: CGFloat(0), y: -CGFloat(250))
+                lockSoftHardTitle2.zPosition = 31
+                lockSoftHard.addChild(lockSoftHardTitle2)
+            default:
+                let lockSoftHardTitle = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockSoftHardTitle.text = "Hot/Cold"
+                lockSoftHardTitle.fontSize = 90
+                lockSoftHardTitle.fontColor = .black
+                lockSoftHardTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(200))
+                lockSoftHardTitle.zPosition = 31
+                lockSoftHard.addChild(lockSoftHardTitle)
+            }
         }
         
         if bestScoreSoftHard <= 74 {
@@ -539,19 +698,44 @@ class MenuScene: SimpleScene {
             lockCarnHerb.zPosition = 31
             lockCarnHerb.zRotation = 7.3
             panel.addChild(lockCarnHerb)
-            let lockCarnHerbTitleNumber = SKLabelNode(text: "75")
+            let lockCarnHerbTitleNumber = SKLabelNode(fontNamed: "Chalkboard SE")
+            lockCarnHerbTitleNumber.text = "75"
             lockCarnHerbTitleNumber.fontSize = 180
             lockCarnHerbTitleNumber.fontColor = .black
             lockCarnHerbTitleNumber.position = CGPoint(x: CGFloat(0), y: -CGFloat(80))
             lockCarnHerbTitleNumber.zPosition = 31
             lockCarnHerb.addChild(lockCarnHerbTitleNumber)
-            let lockCarnHerbTitle = SKLabelNode(text: "Soft/Hard")
-            lockCarnHerbTitle.fontSize = 95
-            lockCarnHerbTitle.fontColor = .black
-            lockCarnHerbTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(200))
-            lockCarnHerbTitle.zPosition = 31
-            lockCarnHerb.addChild(lockCarnHerbTitle)
+            switch Locale.current.languageCode {
+            case "ru":
+                let lockCarnHerbTitle = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockCarnHerbTitle.text = "Мягкое/"
+                lockCarnHerbTitle.fontSize = 75
+                lockCarnHerbTitle.fontColor = .black
+                lockCarnHerbTitle.numberOfLines = 2
+                lockCarnHerbTitle.preferredMaxLayoutWidth = 500
+                lockCarnHerbTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(170))
+                lockCarnHerbTitle.zPosition = 31
+                lockCarnHerb.addChild(lockCarnHerbTitle)
+                let lockCarnHerbTitle2 = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockCarnHerbTitle2.text = "Твердое"
+                lockCarnHerbTitle2.fontSize = 80
+                lockCarnHerbTitle2.fontColor = .black
+                lockCarnHerbTitle2.numberOfLines = 2
+                lockCarnHerbTitle2.preferredMaxLayoutWidth = 500
+                lockCarnHerbTitle2.position = CGPoint(x: CGFloat(0), y: -CGFloat(250))
+                lockCarnHerbTitle2.zPosition = 31
+                lockCarnHerb.addChild(lockCarnHerbTitle2)
+            default:
+                let lockCarnHerbTitle = SKLabelNode(fontNamed: "Chalkboard SE")
+                lockCarnHerbTitle.text = "Soft/Hard"
+                lockCarnHerbTitle.fontSize = 85
+                lockCarnHerbTitle.fontColor = .black
+                lockCarnHerbTitle.position = CGPoint(x: CGFloat(0), y: -CGFloat(200))
+                lockCarnHerbTitle.zPosition = 31
+                lockCarnHerb.addChild(lockCarnHerbTitle)
+            }
         }
         
     }
+    
 }

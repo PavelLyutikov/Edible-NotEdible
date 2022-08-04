@@ -7,69 +7,89 @@
 //
 
 import SpriteKit
-//import YandexMobileAds
 
 var fail: Int = 0
 
 class GameScene: SimpleScene {
 
+    var score: Int = 0
+    var timer: Timer?
+    var initialSeconds: TimeInterval = 15
+    
+    let bestScoreEdible = UserDefaults.standard.integer(forKey: "bestScoreEdible")
+    let bestScoreHotCold = UserDefaults.standard.integer(forKey: "bestScoreHotCold")
+    let bestScoreSoftHard = UserDefaults.standard.integer(forKey: "bestScoreSoftHard")
+    let bestScoreCarnHarb = UserDefaults.standard.integer(forKey: "bestScoreCarnHarb")
+    
     let edible = UserDefaults.standard.bool(forKey: "Edible")
     let hotCold = UserDefaults.standard.bool(forKey: "HotCold")
     let softHard = UserDefaults.standard.bool(forKey: "SoftHard")
     let carnHerb = UserDefaults.standard.bool(forKey: "CarnHerb")
+    
+    var panel: SKSpriteNode!
+    var back: SKSpriteNode!
     
     private var viewModel: GameSceneViewModel = GameSceneViewModel()
     var objectNode: SKSpriteNode!
     var tapEdible: SKButton!
     var tapNotEdible: SKButton!
     
-    var clockSound = SKAction()
-    var winSound = SKAction()
-    var failSound = SKAction()
-    
     var totalTrueLabelNode = SKLabelNode()
     var scoreLabelNode = SKLabelNode()
     var tutotialNode = SKSpriteNode()
     var timeLabelNode = SKLabelNode()
-//    var failScore = SKLabelNode()
-    
     var adCount: Int = 0
     
-//    var backgroundTexture: SKTexture!
-//    var background = SKSpriteNode()
-//    var backgroundObject = SKNode()
+    var openPanel: Bool = false
+    var oneShowAds: Bool = false
+    var timesUp: Bool = false
     
     override func didMove(to view: SKView) {
+        
         if playVolume == true {
-         playBackgroundMusic(fileName: "clock.mp3")
+            playBackgroundMusic(fileName: "clockSound.mp3")
         }
-//        backgroundTexture = SKTexture(imageNamed: "background")
         
         self.viewModel.updateTimeLabel = {
             self.updateTimeLabel()
-//            backgroungMusicPlayer.stop()
-//            self.viewModel.changeFailScore(add: true)
         }
-        self.viewModel.gameOver = {
-            self.failedTimeToSceneBy(nameScene: "FailedTimeScene")
-            if playVolume == true {
-            backgroungMusicPlayer.stop()
-            }
-//            self.viewModel.changeFailScore(add: true)
+        
+        //SuccessfulShowRewardVideo
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.successfulAdViewing), name: NSNotification.Name(rawValue: "successfulAdViewing"), object: nil)
+        
+        backgroundColor = #colorLiteral(red: 0, green: 0.5459641814, blue: 0.8740547299, alpha: 1)
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (timer) in
+            self.setupTimer()
         }
-
-            winSound = SKAction.playSoundFileNamed("win.wav", waitForCompletion: false)
-            failSound = SKAction.playSoundFileNamed("fail.wav", waitForCompletion: false)
-//        clockSound = SKAction.playSoundFileNamed("clock.wav", waitForCompletion: true)
-//        self.playSoundFX(clockSound)
-        self.backgroundColor = .defBackground
         
         self.setupUINodes()
-        self.setupGamesNodes()
 
     }
-// MARK: - UINode
     
+    func gameOver() {
+        if self.openPanel == false && self.oneShowAds == false {
+        self.timesUp = true
+            
+        self.spawnPanelGameOver()
+        self.changeScore(add: true)
+            
+            if playVolume == true {
+                self.run(Sound.timeIsUp.action)
+                backgroungMusicPlayer.stop()
+            }
+        }
+        
+        if self.oneShowAds == true {
+            self.openPanel = false
+
+            self.saveScore(svScore: true)
+                            
+            self.failScore()
+            self.failedTimeToSceneBy(nameScene: "FailedTimeScene")
+        }
+    }
+// MARK: - UINode
     func setupUINodes() {
         
         // Time Image
@@ -80,130 +100,180 @@ class GameScene: SimpleScene {
         addChild(timeGameImage)
         
         // Time Label Node
-        timeLabelNode = LabelNode(text: String(format: "%.1f", viewModel.initialSeconds), fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.maxY - 225), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        timeLabelNode = LabelNode(text: String(format: "%.1f", initialSeconds), fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.maxY - 225), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         timeLabelNode.zPosition = 1
+        timeLabelNode.fontName = "Chalkboard SE"
         self.addChild(timeLabelNode)
         
         // True Label Node
-        scoreLabelNode = LabelNode(text: "\(viewModel.score)", fontSize: 140, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 300), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+        scoreLabelNode = LabelNode(text: "\(score)", fontSize: 140, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 300), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
         scoreLabelNode.zPosition = -1
+        scoreLabelNode.fontName = "Chalkboard SE"
         self.addChild(scoreLabelNode)
         
         // Total True Label Node
-        totalTrueLabelNode = LabelNode(text: "SCORE", fontSize: 50, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 160), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
-        totalTrueLabelNode.zPosition = -1
-        self.addChild(totalTrueLabelNode)
+        switch Locale.current.languageCode {
+        case "ru":
+            totalTrueLabelNode = LabelNode(text: "СЧЁТ:", fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 160), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            totalTrueLabelNode.zPosition = -1
+            totalTrueLabelNode.fontName = "Chalkboard SE"
+            self.addChild(totalTrueLabelNode)
+        default:
+            totalTrueLabelNode = LabelNode(text: "SCORE:", fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 160), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            totalTrueLabelNode.zPosition = -1
+            totalTrueLabelNode.fontName = "Chalkboard SE"
+            self.addChild(totalTrueLabelNode)
+        }
         
-        //FailScore
-//        failScore = LabelNode(text: "\(viewModel.fail)")
         
+        var tapEdibleImage: String!
+        var tapNotEdibleImage: String!
+        var tapSoftImage: String!
+        var tapHardImage: String!
+        var tapHotImage: String!
+        var tapColdImage: String!
+        var tapCarnivoreImage: String!
+        var tapHerbivoreImage: String!
+        switch Locale.current.languageCode {
+        case "ru":
+            tapEdibleImage = "tapEdibleRus"
+            tapNotEdibleImage = "tapNotEdibleRus"
+            tapSoftImage = "tapSoftRus"
+            tapHardImage = "tapHardRus"
+            tapHotImage = "tapHotRus"
+            tapColdImage = "tapColdRus"
+            tapCarnivoreImage = "tapCarnivoreRus"
+            tapHerbivoreImage = "tapHerbivoreRus"
+        default:
+            tapEdibleImage = "tapEdible"
+            tapNotEdibleImage = "tapNotEdible"
+            tapSoftImage = "tapSoft"
+            tapHardImage = "tapHard"
+            tapHotImage = "tapHot"
+            tapColdImage = "tapCold"
+            tapCarnivoreImage = "tapCarnivore"
+            tapHerbivoreImage = "tapHerbivore"
+        }
         
         //TapEdible
         if edible == true {
-            tapEdible = SKButton(imageName: "tapEdible", buttonAction: {
+            tapEdible = SKButton(imageName: tapEdibleImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
-                                            if playVolume == true{
+                                        self.changeScore(add: false) {
+                                            if playVolume == true {
                                             backgroungMusicPlayer.stop()
-                                            self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                         }
-                                            self.failScore()
-                                            
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                        
+                                                self.timer?.invalidate()
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            }
                                         }
-            //                            self.tapEdible.removeFromParent()
-                                        self.objectNode.isHidden = true
-            //                            self.objectNode.removeFromParent()
                                         self.updateLabel()
                                     }
                                 })
         } else if softHard == true {
-            tapEdible = SKButton(imageName: "tapSoft", buttonAction: {
+            tapEdible = SKButton(imageName: tapSoftImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
+                                        self.changeScore(add: false) {
                                             if playVolume == true{
                                             backgroungMusicPlayer.stop()
-                                            self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                         }
-                                            self.failScore()
-                                            
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                                
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            }
                                         }
-            //                            self.tapEdible.removeFromParent()
-                                        self.objectNode.isHidden = true
-            //                            self.objectNode.removeFromParent()
                                         self.updateLabel()
                                     }
                                 })
         } else if hotCold == true {
-            tapEdible = SKButton(imageName: "tapHot", buttonAction: {
+            tapEdible = SKButton(imageName: tapHotImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
-                                            if playVolume == true{
+                                        self.changeScore(add: false) {
+                                            if playVolume == true {
                                             backgroungMusicPlayer.stop()
-                                            self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                         }
-                                            self.failScore()
-                                            
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                                
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            }
                                         }
-            //                            self.tapEdible.removeFromParent()
-                                        self.objectNode.isHidden = true
-            //                            self.objectNode.removeFromParent()
                                         self.updateLabel()
                                     }
                                 })
         } else if carnHerb == true {
-            tapEdible = SKButton(imageName: "tapHerbivore", buttonAction: {
+            tapEdible = SKButton(imageName: tapHerbivoreImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
+                                        self.changeScore(add: false) {
                                             if playVolume == true{
                                             backgroungMusicPlayer.stop()
-                                            self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                         }
-                                            self.failScore()
-                                            
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                                
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            }
                                         }
-            //                            self.tapEdible.removeFromParent()
-                                        self.objectNode.isHidden = true
-            //                            self.objectNode.removeFromParent()
                                         self.updateLabel()
                                     }
                                 })
@@ -218,109 +288,128 @@ class GameScene: SimpleScene {
          
         //TapNotEdible
         if edible == true {
-            tapNotEdible = SKButton(imageName: "tapNotEdible", buttonAction: {
+            tapNotEdible = SKButton(imageName: tapNotEdibleImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if !self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
+                                        self.changeScore(add: false) {
                                             if playVolume == true {
                                             backgroungMusicPlayer.stop()
-                                                self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                             }
-            //                                self.tapNotEdible.removeFromParent()
-                                            self.failScore()
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                
+                                                self.timer?.invalidate()
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            
+                                            }
                                         }
-                                        
-                                        self.objectNode.isHidden = true
                                         self.updateLabel()
                                     }
                                     
                                 })
         } else if softHard == true {
-            tapNotEdible = SKButton(imageName: "tapHard", buttonAction: {
+            tapNotEdible = SKButton(imageName: tapHardImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if !self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
+                                        self.changeScore(add: false) {
                                             if playVolume == true {
                                             backgroungMusicPlayer.stop()
-                                                self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                             }
-            //                                self.tapNotEdible.removeFromParent()
-                                            self.failScore()
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                                
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            }
                                         }
-                                        
-                                        self.objectNode.isHidden = true
                                         self.updateLabel()
                                     }
                                     
                                 })
         } else if hotCold == true {
-            tapNotEdible = SKButton(imageName: "tapCold", buttonAction: {
+            tapNotEdible = SKButton(imageName: tapColdImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if !self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
+                                        self.changeScore(add: false) {
                                             if playVolume == true {
                                             backgroungMusicPlayer.stop()
-                                                self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                             }
-            //                                self.tapNotEdible.removeFromParent()
-                                            self.failScore()
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                                
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                            }
                                         }
-                                        
-                                        self.objectNode.isHidden = true
                                         self.updateLabel()
                                     }
                                     
                                 })
         } else if carnHerb == true {
-            tapNotEdible = SKButton(imageName: "tapCarnivore", buttonAction: {
+            tapNotEdible = SKButton(imageName: tapCarnivoreImage, buttonAction: {
                                     guard self.viewModel.currentNode != nil else {return}
                                     if !self.viewModel.currentNode!.isEdible {
                                         if playVolume == true {
-                                        self.playSoundFX(self.winSound)
+                                            self.run(Sound.win.action)
                                         }
                                         self.createNewObject()
-                                        self.viewModel.changeScore(add: true)
+                                        self.changeScore(add: true)
                                         self.updateLabel()
                                     } else {
-                        //                self.viewModel.changeFailScore(add: true)
-                                        self.viewModel.changeScore(add: false) {
+                                        self.changeScore(add: false) {
                                             if playVolume == true {
                                             backgroungMusicPlayer.stop()
-                                                self.playSoundFX(self.failSound)
+                                                self.run(Sound.fail.action)
                                             }
-            //                                self.tapNotEdible.removeFromParent()
-                                            self.failScore()
-                                            self.failedToSceneBy(nameScene: "FailedScene")
+                                            if self.oneShowAds == false {
+                                                self.spawnPanelGameOver()
+                                            } else {
+                                                self.openPanel = false
+                
+                                                self.saveScore(svScore: true)
+                                                                
+                                                self.failScore()
+                                                self.failedToSceneBy(nameScene: "FailedScene")
+                                                
+                                            }
                                         }
-                                        
-                                        self.objectNode.isHidden = true
                                         self.updateLabel()
                                     }
                                     
@@ -334,26 +423,247 @@ class GameScene: SimpleScene {
             
             tapNotEdible.zPosition = 1
             self.addChild(tapNotEdible)
-        
-
- // MARK: - Instruction
-        //Tutorial Button
-        let tutorialFinished = UserDefaults.standard.bool(forKey: "tutorialFinished")
-        
-        tutotialNode = ButtonNode(imageNode: "instruction", position: CGPoint(x: self.frame.midX, y: self.frame.midY), xScale: 0.4, yScale: 0.4)
-        tutotialNode.zPosition = 5
-        tutotialNode.isHidden = tutorialFinished
-        self.addChild(tutotialNode)
     
         createNewObject()
     }
 
+//MARK: - GameOverPanel
     
-    //newScore
+    func spawnPanelGameOver() {
+        
+        openPanel = true
+        
+        timer?.invalidate()
+        
+        Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { (timer) in
+            self.scene?.view?.isPaused = true
+        }
+        
+        panel = SKSpriteNode(imageNamed: "backgroundMini2")
+        panel.setScale(0.38)
+        panel.position = CGPoint(x: self.frame.midX + 3, y: self.frame.midY)
+        panel.zPosition = 5
+        addChild(panel)
+        
+        back = SKSpriteNode(imageNamed: "backgroundMini5")
+        back.setScale(1)
+        back.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        back.zPosition = 3
+        back.alpha = 0.1
+        addChild(back)
+        
+        
+        switch Locale.current.languageCode {
+        case "ru":
+            let showAds = SKButton(imageName: "showAds", buttonAction: {
+                
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showRewardVideo"), object: nil)
+            })
+            showAds.setScale(2.5)
+            showAds.position = CGPoint(x: 0, y: -200)
+            showAds.zPosition = 6
+            panel.addChild(showAds)
+        default:
+            let showAds = SKButton(imageName: "showAdsEng", buttonAction: {
+                
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showRewardVideo"), object: nil)
+            })
+            showAds.setScale(2.5)
+            showAds.position = CGPoint(x: 0, y: -200)
+            showAds.zPosition = 6
+            panel.addChild(showAds)
+        }
+        
+        
+        let close = SKButton(imageName: "close", buttonAction: {
+            self.scene?.view?.isPaused = false
+            
+            Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { (timer) in
+            
+                if playVolume == true {
+                    self.run(Sound.tap.action)
+                }
+                
+                self.openPanel = false
+                self.saveScore(svScore: true)
+                self.failScore()
+                
+                
+                if self.timesUp == true {
+                    self.failedTimeToSceneBy(nameScene: "FailedTimeScene")
+                } else {
+                    self.failedToSceneBy(nameScene: "FailedScene")
+                }
+            }
+        })
+        close.setScale(0.60)
+        close.position = CGPoint(x: 660, y: 460)
+        close.zPosition = 6
+        panel.addChild(close)
+        
+        if timesUp == true {
+            switch Locale.current.languageCode {
+            case "ru":
+                let label = SKLabelNode(fontNamed: "Chalkboard SE")
+                label.text = "Время!!"
+                label.position = CGPoint(x: 0, y: 200)
+                label.fontColor = .white
+                label.fontSize = 240
+                label.zPosition = 6
+                panel.addChild(label)
+            default:
+                let label = SKLabelNode(fontNamed: "Chalkboard SE")
+                label.text = "Time!!"
+                label.position = CGPoint(x: 0, y: 200)
+                label.fontColor = .white
+                label.fontSize = 240
+                label.zPosition = 6
+                panel.addChild(label)
+            }
+        } else {
+            switch Locale.current.languageCode {
+            case "ru":
+                let label = SKLabelNode(fontNamed: "Chalkboard SE")
+                label.text = "Неверно!!"
+                label.position = CGPoint(x: 0, y: 200)
+                label.fontColor = .white
+                label.fontSize = 240
+                label.zPosition = 6
+                panel.addChild(label)
+            default:
+                let label = SKLabelNode(fontNamed: "Chalkboard SE")
+                label.text = "Mistake!!"
+                label.position = CGPoint(x: 0, y: 200)
+                label.fontColor = .white
+                label.fontSize = 240
+                label.zPosition = 6
+                panel.addChild(label)
+            }
+        }
+    }
+//MARK: - SuccessfulAdViewing
+    @objc func successfulAdViewing() {
+        
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+        if playVolume == true {
+         playBackgroundMusic(fileName: "clock.mp3")
+        }
+        
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+            
+            self.setupTimerTwo()
+            
+            self.scene?.view?.isPaused = false
+
+            guard self.viewModel.currentNode != nil else {return}
+            self.changeScore(add: true)
+            self.createNewObject()
+            self.updateTimeLabel()
+            
+            self.openPanel = false
+            self.oneShowAds = true
+            
+                self.panel.removeFromParent()
+                self.back.removeFromParent()
+            }
+        }
+        
+    }
+//MARK: - NewScore
+    
+    @objc func timerAction() {
+            
+        initialSeconds -= 0.1
+        print(initialSeconds)
+        
+        if initialSeconds <= 0 {
+            
+            initialSeconds = 0.0
+            timer?.invalidate()
+            
+            gameOver()
+        }
+        updateTimeLabel()
+        
+    }
+    
+    func setupTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+    }
+    func setupTimerTwo() {
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+    }
+    
+    func changeScore(add: Bool, completion: @escaping (() -> Void) = {}) {
+            if add {
+                score += 1
+                
+                if score >= 50 {
+                    initialSeconds = 1
+                } else if score >= 25 {
+                    initialSeconds = 2
+                } else if score >= 20 {
+                    initialSeconds = 3
+                } else if score >= 15 {
+                    initialSeconds = 4
+                } else if score >= 10 {
+                    initialSeconds = 5
+                } else if score >= 5 {
+                    initialSeconds = 6
+                } else if score >= 1 {
+                    initialSeconds = 10
+                } else {
+                    initialSeconds = 15
+    }
+            } else {
+                
+//                self.timer?.invalidate()
+                completion()
+            }
+        }
+    func saveScore(svScore: Bool, completion: @escaping (() -> Void) = {}) {
+            if svScore {
+                setScore()
+                setBestScore()
+            }
+        }
+    
+    // Вывод BestScore если побил рекорд
+    func setBestScore() {
+        if edible == true {
+            if bestScoreEdible < score {
+                UserDefaults.standard.set(score, forKey: "bestScoreEdible")
+                UserDefaults.standard.synchronize()
+            }
+        } else if hotCold == true {
+            if bestScoreHotCold < score {
+                UserDefaults.standard.set(score, forKey: "bestScoreHotCold")
+                UserDefaults.standard.synchronize()
+            }
+        } else if softHard == true {
+            if bestScoreSoftHard < score {
+                UserDefaults.standard.set(score, forKey: "bestScoreSoftHard")
+                UserDefaults.standard.synchronize()
+            }
+        } else if carnHerb == true {
+            if bestScoreCarnHarb < score {
+                UserDefaults.standard.set(score, forKey: "bestScoreCarnHarb")
+                UserDefaults.standard.synchronize()
+            }
+        }
+        
+    }
+    func setScore() {
+        if score >= 0 {
+            UserDefaults.standard.set(score, forKey: "failedScore")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     func updateLabel() {
         if scoreLabelNode.parent != nil {
             self.scoreLabelNode.removeFromParent()
-            self.scoreLabelNode = LabelNode(text: "\(viewModel.score)", fontSize: 140, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 300), fontColor: .textColor)
+            self.scoreLabelNode = LabelNode(text: "\(score)", fontSize: 140, position: CGPoint(x: self.frame.midX, y: self.frame.midY - 300), fontColor: .textColor)
             self.zPosition = -1
             self.addChild(scoreLabelNode)
         }
@@ -363,7 +673,7 @@ class GameScene: SimpleScene {
     func updateTimeLabel() {
         if timeLabelNode.parent != nil {
             self.timeLabelNode.removeFromParent()
-            self.timeLabelNode = LabelNode(text: String(format: "%.1f", viewModel.initialSeconds), fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.maxY - 225), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
+            self.timeLabelNode = LabelNode(text: String(format: "%.1f", initialSeconds), fontSize: 60, position: CGPoint(x: self.frame.midX, y: self.frame.maxY - 225), fontColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             self.timeLabelNode.zPosition = 1
             self.addChild(timeLabelNode)
         }
@@ -429,9 +739,6 @@ class GameScene: SimpleScene {
             
     }
     
-    func setupGamesNodes() {
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 }
     
@@ -451,16 +758,15 @@ class GameScene: SimpleScene {
     func failScore() {
 
         fail += 1
+        oneShowAds = false
+        
         if fail >= 4 {
-            
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "presentInterstitial"), object: nil)
             fail = 0
         }
-    }    
-    func failedСhoice() {
-    }
-    override func update(_ currentTime: TimeInterval) {
     }
     
+    override func update(_ currentTime: TimeInterval) {
 
+    }
 }

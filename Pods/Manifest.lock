@@ -1,95 +1,164 @@
 PODS:
-  - AppLovinSDK (6.14.2)
-  - Appodeal (2.6.5)
-  - FBAudienceNetwork (5.10.1):
-    - FBSDKCoreKit/Basics (>= 5.6.0)
-  - FBSDKCoreKit/Basics (7.1.1)
-  - Firebase/Analytics (6.32.2):
+  - AdColony (4.6.1)
+  - Ads-Global (4.0.0.2):
+    - Ads-Global/APM (= 4.0.0.2)
+    - Ads-Global/BUAdSDK (= 4.0.0.2)
+  - Ads-Global/APM (4.0.0.2):
+    - RangersAPM-Pangle/Crash (= 2.3.2-pangle)
+    - RangersAPM-Pangle/Global (= 2.3.2-pangle)
+  - Ads-Global/BUAdSDK (4.0.0.2):
+    - Ads-Global/BUFoundation
+    - Ads-Global/International
+  - Ads-Global/BUFoundation (4.0.0.2)
+  - Ads-Global/Domestic (4.0.0.2)
+  - Ads-Global/International (4.0.0.2)
+  - AppLovinSDK (10.3.4)
+  - Firebase/Analytics (8.7.0):
     - Firebase/Core
-  - Firebase/Core (6.32.2):
+  - Firebase/Core (8.7.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 6.8.2)
-  - Firebase/CoreOnly (6.32.2):
-    - FirebaseCore (= 6.10.2)
-  - FirebaseAnalytics (6.8.2):
-    - FirebaseCore (~> 6.10)
-    - FirebaseInstallations (~> 1.6)
-    - GoogleAppMeasurement (= 6.8.2)
-    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
-    - GoogleUtilities/MethodSwizzler (~> 6.7)
-    - GoogleUtilities/Network (~> 6.7)
-    - "GoogleUtilities/NSData+zlib (~> 6.7)"
-    - nanopb (~> 1.30906.0)
-  - FirebaseCore (6.10.2):
-    - FirebaseCoreDiagnostics (~> 1.6)
-    - GoogleUtilities/Environment (~> 6.7)
-    - GoogleUtilities/Logger (~> 6.7)
-  - FirebaseCoreDiagnostics (1.6.0):
-    - GoogleDataTransport (~> 7.2)
-    - GoogleUtilities/Environment (~> 6.7)
-    - GoogleUtilities/Logger (~> 6.7)
-    - nanopb (~> 1.30906.0)
-  - FirebaseInstallations (1.7.0):
-    - FirebaseCore (~> 6.10)
-    - GoogleUtilities/Environment (~> 6.7)
-    - GoogleUtilities/UserDefaults (~> 6.7)
-    - PromisesObjC (~> 1.2)
-  - Google-Mobile-Ads-SDK (7.65.0):
-    - GoogleAppMeasurement (~> 6.0)
-    - GoogleUserMessagingPlatform (~> 1.1)
-  - GoogleAppMeasurement (6.8.2):
-    - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
-    - GoogleUtilities/MethodSwizzler (~> 6.7)
-    - GoogleUtilities/Network (~> 6.7)
-    - "GoogleUtilities/NSData+zlib (~> 6.7)"
-    - nanopb (~> 1.30906.0)
-  - GoogleDataTransport (7.3.0):
-    - nanopb (~> 1.30906.0)
-  - GoogleMobileAdsMediationFacebook (5.10.1.0):
-    - FBAudienceNetwork (= 5.10.1)
-    - Google-Mobile-Ads-SDK (>= 7.62.0)
-  - GoogleUserMessagingPlatform (1.1.0)
-  - GoogleUtilities/AppDelegateSwizzler (6.7.2):
+    - FirebaseAnalytics (~> 8.7.0)
+  - Firebase/CoreOnly (8.7.0):
+    - FirebaseCore (= 8.7.0)
+  - FirebaseAnalytics (8.7.0):
+    - FirebaseAnalytics/AdIdSupport (= 8.7.0)
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - FirebaseAnalytics/AdIdSupport (8.7.0):
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleAppMeasurement (= 8.7.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - FirebaseCore (8.7.0):
+    - FirebaseCoreDiagnostics (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+  - FirebaseCoreDiagnostics (8.7.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+    - nanopb (~> 2.30908.0)
+  - FirebaseInstallations (8.7.0):
+    - FirebaseCore (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/UserDefaults (~> 7.4)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - Google-Mobile-Ads-SDK (8.12.0):
+    - GoogleAppMeasurement (< 9.0, >= 7.0)
+    - GoogleUserMessagingPlatform (>= 1.1)
+  - GoogleAppMeasurement (8.7.0):
+    - GoogleAppMeasurement/AdIdSupport (= 8.7.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - GoogleAppMeasurement/AdIdSupport (8.7.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
+    - GoogleUtilities/MethodSwizzler (~> 7.4)
+    - GoogleUtilities/Network (~> 7.4)
+    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+    - nanopb (~> 2.30908.0)
+  - GoogleDataTransport (9.1.0):
+    - GoogleUtilities/Environment (~> 7.2)
+    - nanopb (~> 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUserMessagingPlatform (2.0.0)
+  - GoogleUtilities/AppDelegateSwizzler (7.5.2):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.7.2):
-    - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (6.7.2):
+  - GoogleUtilities/Environment (7.5.2):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.5.2):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.7.2):
+  - GoogleUtilities/MethodSwizzler (7.5.2):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.7.2):
+  - GoogleUtilities/Network (7.5.2):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.7.2)"
-  - GoogleUtilities/Reachability (6.7.2):
+  - "GoogleUtilities/NSData+zlib (7.5.2)"
+  - GoogleUtilities/Reachability (7.5.2):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.7.2):
+  - GoogleUtilities/UserDefaults (7.5.2):
     - GoogleUtilities/Logger
-  - nanopb (1.30906.0):
-    - nanopb/decode (= 1.30906.0)
-    - nanopb/encode (= 1.30906.0)
-  - nanopb/decode (1.30906.0)
-  - nanopb/encode (1.30906.0)
-  - PromisesObjC (1.2.10)
-  - UnityAds (3.4.8)
+  - InMobiSDK/Core (10.0.1)
+  - IronSourceAdColonyAdapter (4.3.11.3):
+    - AdColony (= 4.6.1)
+    - IronSourceSDK (= 7.1.12.0)
+  - IronSourceAdMobAdapter (4.3.28.0):
+    - Google-Mobile-Ads-SDK (= 8.12.0.0)
+    - IronSourceSDK (= 7.1.12.0)
+  - IronSourceAppLovinAdapter (4.3.28.3):
+    - AppLovinSDK (= 10.3.4)
+    - IronSourceSDK (= 7.1.12.0)
+  - IronSourceInMobiAdapter (4.3.13.0):
+    - InMobiSDK/Core (= 10.0.1)
+    - IronSourceSDK (= 7.1.12.0)
+  - IronSourcePangleAdapter (4.3.9.1):
+    - Ads-Global (= 4.0.0.2)
+    - Ads-Global/Domestic (= 4.0.0.2)
+    - IronSourceSDK (= 7.1.12.0)
+  - IronSourceSDK (7.1.12.0)
+  - IronSourceUnityAdsAdapter (4.3.17.0):
+    - IronSourceSDK (= 7.1.12.0)
+    - UnityAds (= 3.7.5)
+  - IronSourceVungleAdapter (4.3.14.2):
+    - IronSourceSDK (= 7.1.12.0)
+    - VungleSDK-iOS (= 6.10.3)
+  - nanopb (2.30908.0):
+    - nanopb/decode (= 2.30908.0)
+    - nanopb/encode (= 2.30908.0)
+  - nanopb/decode (2.30908.0)
+  - nanopb/encode (2.30908.0)
+  - OneKit-Pangle/BaseKit (1.1.21-pangle)
+  - OneKit-Pangle/Database (1.1.21-pangle):
+    - OneKit-Pangle/Service
+  - OneKit-Pangle/Service (1.1.21-pangle)
+  - PromisesObjC (2.0.0)
+  - RangersAPM-Pangle/Core (2.3.2-pangle):
+    - OneKit-Pangle/BaseKit (= 1.1.21-pangle)
+  - RangersAPM-Pangle/Crash (2.3.2-pangle):
+    - RangersAPM-Pangle/Core
+    - RangersAPM-Pangle/HMD
+    - RangersAPM-Pangle/Public
+  - RangersAPM-Pangle/Global (2.3.2-pangle):
+    - RangersAPM-Pangle/Core
+    - RangersAPM-Pangle/Public
+  - RangersAPM-Pangle/HMD (2.3.2-pangle):
+    - OneKit-Pangle/Database (= 1.1.21-pangle)
+    - RangersAPM-Pangle/Core
+  - RangersAPM-Pangle/Public (2.3.2-pangle):
+    - RangersAPM-Pangle/Core
+  - UnityAds (3.7.5)
+  - VungleSDK-iOS (6.10.3)
 
 DEPENDENCIES:
-  - AppLovinSDK
-  - Appodeal
   - Firebase/Analytics
-  - Google-Mobile-Ads-SDK
-  - GoogleMobileAdsMediationFacebook
-  - UnityAds
+  - IronSourceAdColonyAdapter (= 4.3.11.3)
+  - IronSourceAdMobAdapter (= 4.3.28.0)
+  - IronSourceAppLovinAdapter (= 4.3.28.3)
+  - IronSourceInMobiAdapter (= 4.3.13.0)
+  - IronSourcePangleAdapter (= 4.3.9.1)
+  - IronSourceSDK (= 7.1.12.0)
+  - IronSourceUnityAdsAdapter (= 4.3.17.0)
+  - IronSourceVungleAdapter (= 4.3.14.2)
 
 SPEC REPOS:
   trunk:
+    - AdColony
+    - Ads-Global
     - AppLovinSDK
-    - Appodeal
-    - FBAudienceNetwork
-    - FBSDKCoreKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -98,33 +167,54 @@ SPEC REPOS:
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleDataTransport
-    - GoogleMobileAdsMediationFacebook
     - GoogleUserMessagingPlatform
     - GoogleUtilities
+    - InMobiSDK
+    - IronSourceAdColonyAdapter
+    - IronSourceAdMobAdapter
+    - IronSourceAppLovinAdapter
+    - IronSourceInMobiAdapter
+    - IronSourcePangleAdapter
+    - IronSourceSDK
+    - IronSourceUnityAdsAdapter
+    - IronSourceVungleAdapter
     - nanopb
+    - OneKit-Pangle
     - PromisesObjC
+    - RangersAPM-Pangle
     - UnityAds
+    - VungleSDK-iOS
 
 SPEC CHECKSUMS:
-  AppLovinSDK: 3201f352b21f10a575ac24c1ea6f7bfc0ae9c64e
-  Appodeal: 8b7785dda5b698d688fc9ff7872e2f8f395af638
-  FBAudienceNetwork: 6cdcc40aa475e8045ab14398e181a3dc90a5014e
-  FBSDKCoreKit: b46507dc8b8cefed31d644e74d7cc30e2a715ef8
-  Firebase: 47176280bfba198e531f909cfb1612dad216cb96
-  FirebaseAnalytics: 3c2fee6a922023ccfda7af87e4e641bad1fc11ba
-  FirebaseCore: 1d697bb944bf2af5fc248f1a66e165c9dd88bf97
-  FirebaseCoreDiagnostics: 7415bfb3883b3500c5a95c42b6ba66baae78f600
-  FirebaseInstallations: 466c7b4d1f58fe16707693091da253726a731ed2
-  Google-Mobile-Ads-SDK: af735e001ee534d9dd2ce0a87cd8c355b19844b5
-  GoogleAppMeasurement: 1a66f478c68ecd6c16ee63ee60c7c3a648e6b337
-  GoogleDataTransport: e85fb700c9b027079ce182c3d08e12e0f9618bb4
-  GoogleMobileAdsMediationFacebook: 22e37144dabf56418439e7a48a12495838f153f2
-  GoogleUserMessagingPlatform: 9dc714d2e1f0aa727b9cc52d266dc1b155f4c3f2
-  GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
-  nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
-  PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
-  UnityAds: 729ce6e485d5ae45df03ad13e440cde6967feee3
+  AdColony: 957c975fa756fcdb10a91e8a7d6de4cf5bfc4f78
+  Ads-Global: bec8382b80ceb6b3bbcd3d18bb73a45f3bfad96e
+  AppLovinSDK: 5a28da8e9b298a11e9e878abcc98e21e7edbdad3
+  Firebase: bc9325d5ee2041524bac78a5213d0e530c651309
+  FirebaseAnalytics: 52768800c2add1d84b751420cb4caaf8195f2c41
+  FirebaseCore: f4804c1d3f4bbbefc88904d15653038f2c99ddf7
+  FirebaseCoreDiagnostics: b63732f581a1c6a453ec7241f9ab60b3a5bd3450
+  FirebaseInstallations: ede6fb72bb6337914e5888b399271259d0c4910c
+  Google-Mobile-Ads-SDK: fb31b6ef68ef352b551ee29585cd9ceb07230cd0
+  GoogleAppMeasurement: 2be61ce546ad074dbe4dd545f222ac6033bb1d9e
+  GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
+  GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
+  GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
+  InMobiSDK: 91a9ce7070f892a28e005605c23c58434be6c4c5
+  IronSourceAdColonyAdapter: 62a3480aa5f3405efcb8da5c053e16d315a005e6
+  IronSourceAdMobAdapter: ea6fa2a333a44a2cea402df6ecbb68d62ac9e0a4
+  IronSourceAppLovinAdapter: e24d16cc29a87c247a62d7887e214de79aa0e95e
+  IronSourceInMobiAdapter: 3b9b03b75a1e107366e689a51a0054a553eca942
+  IronSourcePangleAdapter: a52257006e8135c265189fd2949e1acbb72f90b0
+  IronSourceSDK: f8c439ff772b2b6f4b826054d661238d4d3c4d53
+  IronSourceUnityAdsAdapter: ff666c275194ee913bc11de9c70ce903d15314f2
+  IronSourceVungleAdapter: f7468726af677dba25aad05de75febef7add5fc2
+  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  OneKit-Pangle: 68a778c39d36ed8feffd667a6b49225427bcf286
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  RangersAPM-Pangle: 97c8fe91af08574a739cc72a714b735efb6c891f
+  UnityAds: 9adbfd8ccc008e4e3e7b1bcf5666a126df4f1a8e
+  VungleSDK-iOS: b370edd2e5787ecb25fc9332941deb1e1ca8176e
 
-PODFILE CHECKSUM: 3f9ac62543fbafb87ff141a9cefc37640bb681b7
+PODFILE CHECKSUM: bf72aae6d79c53c200d49f6a7e9682c55d2ec51b
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

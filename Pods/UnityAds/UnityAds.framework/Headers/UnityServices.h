@@ -1,13 +1,14 @@
+#import <UnityAds/UnityAdsInitializationDelegate.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, UnityServicesError) {
+typedef NS_ENUM (NSInteger, UnityServicesError) {
     kUnityServicesErrorInvalidArgument,
     kUnityServicesErrorInitSanityCheckFail
 };
 
 @protocol UnityServicesDelegate <NSObject>
-- (void)unityServicesDidError:(UnityServicesError)error withMessage:(NSString *)message;
+- (void)unityServicesDidError: (UnityServicesError)error withMessage: (NSString *)message;
 @end
 
 @interface UnityServices : NSObject
@@ -20,32 +21,35 @@ typedef NS_ENUM(NSInteger, UnityServicesError) {
  *  @param gameId   Unique identifier for a game, given by Unity Ads admin tools or Unity editor.
  *  @param delegate delegate for UnityAdsDelegate callbacks
  *  @param testMode Set this flag to `YES` to indicate test mode and show only test ads.
+ *  @param usePerPlacementLoad If true, disables automatic requests, and allows the load() function to request placements instead
+ *  @param initializationDelegate Delegate for UnityAdsInitializationDelegate callbacks
  */
-+ (void)initialize:(NSString *)gameId
-          delegate:(nullable id<UnityServicesDelegate>)delegate
-          testMode:(BOOL)testMode
-          usePerPlacementLoad:(BOOL)usePerPlacementLoad;
++ (void)        initialize: (NSString *)gameId
+                  delegate: (nullable id<UnityServicesDelegate>)delegate
+                  testMode: (BOOL)testMode
+       usePerPlacementLoad: (BOOL)usePerPlacementLoad
+    initializationDelegate: (nullable id<UnityAdsInitializationDelegate>)initializationDelegate;
 
 /**
  *  Get the current debug status of `UnityAds`.
  *
  *  @return If `YES`, `UnityAds` will provide verbose logs.
  */
-+ (BOOL)getDebugMode;
++ (BOOL)      getDebugMode;
 
 /**
  *  Set the logging verbosity of `UnityAds`. Debug mode indicates verbose logging.
  *  @warning Does not relate to test mode for ad content.
  *  @param enableDebugMode `YES` for verbose logging.
  */
-+ (void)setDebugMode:(BOOL)enableDebugMode;
++ (void)setDebugMode: (BOOL)enableDebugMode;
 
 /**
  *  Check to see if the current device supports using Unity Ads.
  *
  *  @return If `NO`, the current device cannot initialize `UnityAds` or show ads.
  */
-+ (BOOL)isSupported;
++ (BOOL)      isSupported;
 
 /**
  *  Check the version of this `UnityAds` SDK
@@ -59,7 +63,9 @@ typedef NS_ENUM(NSInteger, UnityServicesError) {
  *
  *  @return If `YES`, Unity Ads has been successfully initialized.
  */
-+ (BOOL)isInitialized;
++ (BOOL)      isInitialized;
+
++ (NSString *)createExpectedParametersString: (NSString *)fieldName current: (NSString *)current received: (NSString *)received;
 
 @end
 

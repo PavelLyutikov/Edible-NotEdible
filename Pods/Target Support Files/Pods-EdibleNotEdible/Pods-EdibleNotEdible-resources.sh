@@ -97,10 +97,18 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "${PODS_ROOT}/AppLovinSDK/applovin-ios-sdk-6.14.2/AppLovinSDKResources.bundle"
+  install_resource "${PODS_ROOT}/Ads-Global/PangleSDK/LICENSE"
+  install_resource "${PODS_ROOT}/Ads-Global/PangleSDK/BUAdSDK.bundle"
+  install_resource "${PODS_ROOT}/AppLovinSDK/applovin-ios-sdk-10.3.4/AppLovinSDKResources.bundle"
+  install_resource "${PODS_ROOT}/RangersAPM-Pangle/RangersAPM-Pangle/Assets/Core/APMInsightCore.bundle"
+  install_resource "${PODS_ROOT}/RangersAPM-Pangle/RangersAPM-Pangle/Assets/Crash/APMInsightCrash.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "${PODS_ROOT}/AppLovinSDK/applovin-ios-sdk-6.14.2/AppLovinSDKResources.bundle"
+  install_resource "${PODS_ROOT}/Ads-Global/PangleSDK/LICENSE"
+  install_resource "${PODS_ROOT}/Ads-Global/PangleSDK/BUAdSDK.bundle"
+  install_resource "${PODS_ROOT}/AppLovinSDK/applovin-ios-sdk-10.3.4/AppLovinSDKResources.bundle"
+  install_resource "${PODS_ROOT}/RangersAPM-Pangle/RangersAPM-Pangle/Assets/Core/APMInsightCore.bundle"
+  install_resource "${PODS_ROOT}/RangersAPM-Pangle/RangersAPM-Pangle/Assets/Crash/APMInsightCrash.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

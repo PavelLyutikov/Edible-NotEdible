@@ -7,31 +7,17 @@
 //
 
 import UIKit
-import GoogleMobileAds
 import Firebase
-import UnityAds
-import AdSupport
-import FBAudienceNetwork
-import AppLovinSDK
-//import AppTrackingTransparency
-//import Appodeal
 
-@available(iOS 14, *)
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-//        YMAMobileAds.enableLogging()
-
-//        Appodeal.initialize(withApiKey: "3c065f328dad69ea97d7b0c1db62df071e6ebce48ada1383", types: adTypes, hasConsent: consent)
-            
-        FBAdSettings.addTestDevice(FBAdSettings.testDeviceHash())
-//        FBAdSettings.clearTestDevice(FBAdSettings.testDeviceHash())
+        
+        FirebaseApp.configure()
         
         if !UserDefaults.standard.bool(forKey: "isFirstLaunch") {
             UserDefaults.standard.set(true, forKey: "Edible")
@@ -41,21 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set(true, forKey: "isFirstLaunch")
         
         
-            GADMobileAds.sharedInstance().start(completionHandler: nil)
-        ALSdk.initializeSdk()
-        FirebaseApp.configure()
-//        requestIDFA()
-        
         return true
     }
-    
-    
-//    func requestIDFA() {
-//      ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-//        // Tracking authorization completed. Start loading ads here.
-//        // loadAd()
-//      })
-//    }
     
 
     func applicationWillResignActive(_ application: UIApplication) {

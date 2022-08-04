@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>299883030308-l2mktu6n5alc3hkdstuu1aifgf0ucumt.apps.googleusercontent.com</string>
+	<string>257021049821-bboqi53h4muuqajnaub3v8ltmpk5d8lc.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.299883030308-l2mktu6n5alc3hkdstuu1aifgf0ucumt</string>
+	<string>com.googleusercontent.apps.257021049821-bboqi53h4muuqajnaub3v8ltmpk5d8lc</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDPRIGh1OMGNgXM69S5AdXoMzDkd7OoW54</string>
+	<string>AIzaSyAgxLBeGKSuIwq2cO977KDLGG4ZDOcpiHY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>299883030308</string>
+	<string>257021049821</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>game.spriteKit.Edible.Not.Edible</string>
 	<key>PROJECT_ID</key>
-	<string>edible-ea8d9</string>
+	<string>edible-271f4</string>
 	<key>STORAGE_BUCKET</key>
-	<string>edible-ea8d9.appspot.com</string>
+	<string>edible-271f4.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:299883030308:ios:08ad46dfa4d74339bd35b1</string>
+	<string>1:257021049821:ios:d918d62e1bb29db25e1434</string>
 	<key>DATABASE_URL</key>
-	<string>https://edible-ea8d9.firebaseio.com</string>
+	<string>https://edible-271f4.firebaseio.com</string>
 </dict>
 </plist>

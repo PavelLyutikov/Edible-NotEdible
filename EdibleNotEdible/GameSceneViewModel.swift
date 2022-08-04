@@ -9,19 +9,20 @@
 import Foundation
 
 var playVolume: Bool = true
-
-
-
+var gameSceneClosed: Bool = false
+var showRewardAds: Bool = false
 class GameSceneViewModel {
     
     var currentNode: ObjectModel? = nil
-    var score: Int = 0
+//    var score: Int = 0
     
     var fail: Int = 0
     
     var updateTimeLabel: () -> Void = {}
-    var timer: Timer?
-    var initialSeconds: TimeInterval = 15
+    var updateTimeLabelRewardAds: () -> Void = {}
+    
+//    var timer: Timer?
+//    var initialSeconds: TimeInterval = 15
     var gameOver: () -> Void = {}
     
     let edible = UserDefaults.standard.bool(forKey: "Edible")
@@ -29,108 +30,99 @@ class GameSceneViewModel {
     let softHard = UserDefaults.standard.bool(forKey: "SoftHard")
     let carnHerb = UserDefaults.standard.bool(forKey: "CarnHerb")
     
-    let bestScoreEdible = UserDefaults.standard.integer(forKey: "bestScoreEdible")
-    let bestScoreHotCold = UserDefaults.standard.integer(forKey: "bestScoreHotCold")
-    let bestScoreSoftHard = UserDefaults.standard.integer(forKey: "bestScoreSoftHard")
-    let bestScoreCarnHarb = UserDefaults.standard.integer(forKey: "bestScoreCarnHarb")
-    
-    @objc func timerAction() {
-        
-        initialSeconds -= 0.1
-            print(initialSeconds)
-        
-        if initialSeconds <= 0 {
-            
-            self.setBestScore()
-            self.setScore()
-            self.gameOver()
-            self.timer?.invalidate()
-            
-      }
-      updateTimeLabel()
-    }
-    
-    init() {
+//    let bestScoreEdible = UserDefaults.standard.integer(forKey: "bestScoreEdible")
+//    let bestScoreHotCold = UserDefaults.standard.integer(forKey: "bestScoreHotCold")
+//    let bestScoreSoftHard = UserDefaults.standard.integer(forKey: "bestScoreSoftHard")
+//    let bestScoreCarnHarb = UserDefaults.standard.integer(forKey: "bestScoreCarnHarb")
 
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
-    }
     
-//    func changeFailScore(add: Bool, completion: @escaping (() -> Void) = {}) {
-//        if add {
+//    @objc func timerAction() {
 //
-//            fail += 1
+//        initialSeconds -= 0.1
+//        print(initialSeconds)
 //
-//            if fail >= 2 {
-//                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "presentInterstitial"), object: nil)
-//            }
-//        } else {
-//            completion()
-//            print("fail")
+//        if initialSeconds <= 0 {
+//
+//            initialSeconds = 0.0
+//            self.gameOver()
+//        }
+//        updateTimeLabel()
+//
+//        if gameSceneClosed == true {
+//            timer?.invalidate()
 //        }
 //    }
+//
+//    init() {
+//        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+//    }
+//
+//    func changeScore(add: Bool, completion: @escaping (() -> Void) = {}) {
+//            if add {
+//                score += 1
+//
+//                if score >= 50 {
+//                    initialSeconds = 1
+//                } else if score >= 25 {
+//                    initialSeconds = 2
+//                } else if score >= 20 {
+//                    initialSeconds = 3
+//                } else if score >= 15 {
+//                    initialSeconds = 4
+//                } else if score >= 10 {
+//                    initialSeconds = 5
+//                } else if score >= 5 {
+//                    initialSeconds = 6
+//                } else if score >= 1 {
+//                    initialSeconds = 10
+//                } else {
+//                    initialSeconds = 15
+//    }
+//            } else {
+//
+////                self.timer?.invalidate()
+//                completion()
+//            }
+//        }
     
-    func changeScore(add: Bool, completion: @escaping (() -> Void) = {}) {
-            if add {
-                score += 1
-                
-                if score >= 50 {
-                    initialSeconds = 1
-                } else if score >= 25 {
-                    initialSeconds = 2
-                } else if score >= 20 {
-                    initialSeconds = 3
-                } else if score >= 15 {
-                    initialSeconds = 4
-                } else if score >= 10 {
-                    initialSeconds = 5
-                } else if score >= 5 {
-                    initialSeconds = 6
-                } else if score >= 1 {
-                    initialSeconds = 10
-                } else {
-                    initialSeconds = 15
-    }
-            } else {
-                
-                self.timer?.invalidate()
-                setScore()
-                setBestScore()
-                completion()
-                
-            }
-        }
-    
-    // Вывод BestScore если побил рекорд
-    func setBestScore() {
-        if edible == true {
-            if bestScoreEdible < score {
-                UserDefaults.standard.set(score, forKey: "bestScoreEdible")
-                UserDefaults.standard.synchronize()
-            }
-        } else if hotCold == true {
-            if bestScoreHotCold < score {
-                UserDefaults.standard.set(score, forKey: "bestScoreHotCold")
-                UserDefaults.standard.synchronize()
-            }
-        } else if softHard == true {
-            if bestScoreSoftHard < score {
-                UserDefaults.standard.set(score, forKey: "bestScoreSoftHard")
-                UserDefaults.standard.synchronize()
-            }
-        } else if carnHerb == true {
-            if bestScoreCarnHarb < score {
-                UserDefaults.standard.set(score, forKey: "bestScoreCarnHarb")
-                UserDefaults.standard.synchronize()
-            }
-        }
-        
-    }
-    func setScore() {
-        if score >= 0 {
-            UserDefaults.standard.set(score, forKey: "failedScore")
-            UserDefaults.standard.synchronize()
-        }
-    }
+//    func saveScore(svScore: Bool, completion: @escaping (() -> Void) = {}) {
+//            if svScore {
+//                setScore()
+//                setBestScore()
+//            }
+//        }
+//    
+//    // Вывод BestScore если побил рекорд
+//    func setBestScore() {
+//        if edible == true {
+//            if bestScoreEdible < score {
+//                UserDefaults.standard.set(score, forKey: "bestScoreEdible")
+//                UserDefaults.standard.synchronize()
+//            }
+//        } else if hotCold == true {
+//            if bestScoreHotCold < score {
+//                UserDefaults.standard.set(score, forKey: "bestScoreHotCold")
+//                UserDefaults.standard.synchronize()
+//            }
+//        } else if softHard == true {
+//            if bestScoreSoftHard < score {
+//                UserDefaults.standard.set(score, forKey: "bestScoreSoftHard")
+//                UserDefaults.standard.synchronize()
+//            }
+//        } else if carnHerb == true {
+//            if bestScoreCarnHarb < score {
+//                UserDefaults.standard.set(score, forKey: "bestScoreCarnHarb")
+//                UserDefaults.standard.synchronize()
+//            }
+//        }
+//        
+//    }
+//    func setScore() {
+//        if score >= 0 {
+//            UserDefaults.standard.set(score, forKey: "failedScore")
+//            UserDefaults.standard.synchronize()
+//        }
+//    }
     
     // ObjectModel
     let objectsArray: [ObjectModel] = [ObjectModel(name: "potato", isEdible: true),
@@ -312,7 +304,7 @@ class GameSceneViewModel {
     ObjectModel(name: "ball6", isEdible: false),
     ObjectModel(name: "barrel", isEdible: false),
     ObjectModel(name: "barrel2", isEdible: false),
-    ObjectModel(name: "bat", isEdible: true),
+    ObjectModel(name: "bat", isEdible: false),
     ObjectModel(name: "bat2", isEdible: false),
     ObjectModel(name: "bathroom", isEdible: false),
     ObjectModel(name: "baton", isEdible: false),
@@ -405,8 +397,8 @@ class GameSceneViewModel {
     ObjectModel(name: "shuriken", isEdible: false),
     ObjectModel(name: "smartwatch", isEdible: false),
     ObjectModel(name: "smoke", isEdible: false),
-    ObjectModel(name: "snake", isEdible: true),
-    ObjectModel(name: "snake2", isEdible: true),
+    ObjectModel(name: "snake", isEdible: false),
+    ObjectModel(name: "snake2", isEdible: false),
     ObjectModel(name: "soldier", isEdible: false),
     ObjectModel(name: "spider", isEdible: false),
     ObjectModel(name: "spider2", isEdible: false),
@@ -470,7 +462,7 @@ class GameSceneViewModel {
     ObjectModel(name: "shark", isEdible: false),
     ObjectModel(name: "siberian-husky", isEdible: false),
     ObjectModel(name: "skunk", isEdible: false),
-    ObjectModel(name: "snake", isEdible: false),
+    ObjectModel(name: "snake3", isEdible: false),
     ObjectModel(name: "spider", isEdible: false),
     ObjectModel(name: "squid", isEdible: false),
     ObjectModel(name: "tiger", isEdible: false),
@@ -645,7 +637,7 @@ class GameSceneViewModel {
     ObjectModel(name: "gym2", isEdible: false),
     ObjectModel(name: "hammer4", isEdible: false),
     ObjectModel(name: "hammer5", isEdible: false),
-    ObjectModel(name: "hat", isEdible: false),
+    ObjectModel(name: "hat2", isEdible: true),
     ObjectModel(name: "helmet", isEdible: false),
     ObjectModel(name: "helmet2", isEdible: false),
     ObjectModel(name: "horn", isEdible: false),
